@@ -6,6 +6,7 @@ import random
 from datetime import datetime
 from pytz import UTC
 import requests
+import inspect
 
 smartfacturl = "http://fact-project.org/smartfact/data/"
 
@@ -55,6 +56,16 @@ class SmartFact(object):
 		self.container_temperature = container_temperature
 		self.current_source = current_source
 		self.camera_climate = camera_climate
+
+	def all(self):
+		functions = inspect.getmembers(self, predicate=inspect.isfunction)
+
+		full = dict()
+		for function in functions:
+			full[function[0]] = function[1]()
+			
+		return full
+
 
 def drive(url=smartfacturl + 'tracking.data'):
 	tc = TableCrawler(url)
