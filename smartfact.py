@@ -76,7 +76,7 @@ def drive(url=smartfacturl + 'tracking.data'):
 		'Declination_in_Deg': float(tc[3,1]),
 		'Zenith_Distance_in_Deg': float(tc[4,1]),
 		'Azimuth_in_Deg': float(tc[5,1]),
-		'Control_Deviatiob_in_ArcSec': float(tc[6,1]),
+		'Control_Deviation_in_ArcSec': float(tc[6,1]),
 		'Distance_to_Moon_in_Deg': tc[7,1],	
 	}
 
