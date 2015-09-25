@@ -71,7 +71,7 @@ def drive(url=smartfacturl + 'tracking.data'):
 	tc = TableCrawler(url)
 	return {
 		'Time_Stamp': smartfact_time2datetime(tc[0,0]),
-		'Source_Name': tc[1,1],
+		'Source_Name': tc[1,1:],
 		'Right_Ascention_in_h': float(tc[2,1]),
 		'Declination_in_Deg': float(tc[3,1]),
 		'Zenith_Distance_in_Deg': float(tc[4,1]),
@@ -187,7 +187,7 @@ def current_source(url=smartfacturl + 'source.data'):
 	tc = TableCrawler(url)
 	return {
 		'Time_Stamp': smartfact_time2datetime(tc[0,0]),
-		'Source_Name': tc[1,1],
+		'Source_Name': tc[1,1:],
 		'Right_Ascention_in_h': float(tc[2,1]),
 		'Declination_in_Deg': float(tc[3,1]),
 		'Wobble_offset_in_Deg': float(tc[4,1]),
