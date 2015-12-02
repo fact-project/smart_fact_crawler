@@ -1,6 +1,6 @@
 # SmartFACT crawler
 
-the smartfact crawler is a tool to acquiere data published on the smartfact web page. Information as DRIVE, SOURCE, and WEATHER can be retrieved in apython dictonary. Most numerical values are already converted to their propper representation  e.g. float, int, datetime...
+the smartfact crawler is a tool to acquiere data published on the smartfact web page. Information as DRIVE, SOURCE, and WEATHER can be retrieved in a python dictonary. Most numerical values are already converted to their propper representation  e.g. float, int, datetime...
 
 ## Usage
 ### The full SmartFact representation in python:
