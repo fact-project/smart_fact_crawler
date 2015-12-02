@@ -4,7 +4,6 @@ from collections import defaultdict
 import time 
 import random
 from datetime import datetime
-from pytz import UTC
 import requests
 import inspect
 
@@ -40,8 +39,8 @@ class TableCrawler(object):
 		self.page_payload = self.web_page.content.split('\n')
 
 def smartfact_time2datetime(fact_time_stamp):
-	return datetime.fromtimestamp(
-		float(fact_time_stamp)/1000.0, UTC
+	return datetime.utcfromtimestamp(
+		float(fact_time_stamp)/1000.0
 	)
 
 class SmartFact(object):
