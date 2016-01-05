@@ -42,7 +42,7 @@ def str2float(text):
 	try:
 		number = float(text)
 	except:
-		number = nan
+		number = float("nan")
 
 	return number
 
