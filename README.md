@@ -7,8 +7,8 @@ the smartfact crawler is a tool to acquiere data published on the smartfact web 
 
 ```
 #!python
-import smartfact.py
-smf = SmartFact()
+import smart_fact_crawler as sfc
+smf = sfc.SmartFact()
 smf.drive()
 	{
 		'Azimuth_in_Deg': -223.0,
@@ -25,8 +25,8 @@ smf.drive()
 ### Or one uses the single SmartFact fuctions directly: 
 ```
 #!python
-import smartfact.py
-drive()
+import smart_fact_crawler as sfc
+sfc.drive()
 	{
 		'Azimuth_in_Deg': -223.0,
 		'Control_Deviation_in_ArcSec': 1.28,
@@ -42,8 +42,8 @@ drive()
 or the Sky Quality Meter:
 ```
 #!python
-import smartfact.py
-sqm()
+import smart_fact_crawler as sfc
+sfc.sqm()
 	{
 		'Magnitude': 0.0,
 	 	'Sensor_Frequency_in_Hz': 546549.0,
