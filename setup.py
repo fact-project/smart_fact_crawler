@@ -1,4 +1,5 @@
-from distutils.core import setup, Extension
+from distutils.core import setup
+
 
 setup(
     name='smart_fact_crawler',
@@ -10,10 +11,10 @@ setup(
     license='MIT',
     packages=[
         'smart_fact_crawler',
-        ],
+    ],
     install_requires=[
         'requests',
         'python-dateutil',
     ],
-    zip_safe=False
+    zip_safe=False,
 )
