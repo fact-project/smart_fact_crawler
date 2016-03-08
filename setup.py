@@ -5,7 +5,7 @@ setup(
     name='smart_fact_crawler',
     version='0.0.1',
     description='acquieres data published on the smartfact web page',
-    url='https://bitbucket.org/Relleums/smartfactcrawler',
+    url='https://github.com/fact-project/smart_fact_crawler.git',
     author='Dominik Neise, Sebastian Mueller',
     author_email='sebmuell@phys.ethz.ch',
     license='MIT',
