@@ -6,8 +6,7 @@ Information as DRIVE, SOURCE, and WEATHER are accessable in a python dictonary. 
 ## Usage
 ### The full SmartFact representation in python:
 
-```
-#!python
+```python
 import smart_fact_crawler as sfc
 smf = sfc.SmartFact()
 smf.drive()
@@ -24,8 +23,7 @@ smf.drive()
 ```
 
 ### Or one uses the single SmartFact functions directly: 
-```
-#!python
+```python
 import smart_fact_crawler as sfc
 sfc.drive()
 	{
@@ -41,8 +39,7 @@ sfc.drive()
 ```
 
 or the Sky Quality Meter:
-```
-#!python
+```python
 import smart_fact_crawler as sfc
 sfc.sqm()
 	{
