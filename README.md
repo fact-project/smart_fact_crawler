@@ -4,7 +4,7 @@ the smartfact crawler acquieres data from the FACT DIM network via the DIM to we
 Information as DRIVE, SOURCE, and WEATHER are accessable in a python dictonary. Most numerical values are converted to their propper representation  e.g. float, int, datetime...
 
 ## Usage
-### The full SmartFact representation in python:
+### SmartFact class in python:
 
 ```python
 import smart_fact_crawler as sfc
@@ -22,7 +22,7 @@ smf.drive()
  	}
 ```
 
-### Or one uses the single SmartFact functions directly: 
+### single SmartFact functions: 
 ```python
 import smart_fact_crawler as sfc
 sfc.drive()
