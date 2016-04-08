@@ -20,7 +20,11 @@ class TableCrawler(object):
 
     def __getitem__(self, index):
         row, col = index
-        return self.page_payload[row].split()[col]
+        item = self.page_payload[row].split()[col]
+        if isinstance(col, slice):
+            return " ".join(item)
+        else:
+            return item
 
     def _request_web_page(self, url):
         while True:
