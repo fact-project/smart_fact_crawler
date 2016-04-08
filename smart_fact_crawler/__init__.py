@@ -20,7 +20,11 @@ class TableCrawler(object):
 
     def __getitem__(self, index):
         row, col = index
-        return self.page_payload[row].split()[col]
+        item = self.page_payload[row].split()[col]
+        if isinstance(col, slice):
+            return " ".join(item)
+        else:
+            return item
 
     def _request_web_page(self, url):
         while True:
@@ -79,8 +83,13 @@ class SmartFact(object):
 
         return full
 
+def drive():
+    return {
+        "tracking": tracking(),
+        "pointing": pointing(),
+    }
 
-def drive(url=smartfacturl + 'tracking.data'):
+def tracking(url=smartfacturl + 'tracking.data'):
     tc = TableCrawler(url)
     return {
         'Time_Stamp': smartfact_time2datetime(tc[0, 0]),
@@ -91,6 +100,14 @@ def drive(url=smartfacturl + 'tracking.data'):
         'Azimuth_in_Deg': str2float(tc[5, 1]),
         'Control_Deviation_in_ArcSec': str2float(tc[6, 1]),
         'Distance_to_Moon_in_Deg': tc[7, 1],
+    }
+
+def pointing(url=smartfacturl + 'pointing.data'):
+    tc = TableCrawler(url)
+    return {
+        'Time_Stamp': smartfact_time2datetime(tc[0, 0]),
+        'Azimuth_in_Deg': str2float(tc[1, 1]),
+        'Zenith_Distance_in_Deg': str2float(tc[2, 1]),
     }
 
 
@@ -175,22 +192,24 @@ def status(url=smartfacturl + 'status.data'):
         'Feedback': tc[10, 1:],
         'Rate_control': tc[11, 1:],
         'FSC_control': tc[12, 1:],
-        'GPS_control': tc[13, 1:],
-        'SQM_control': tc[14, 1:],
-        'Agilent_control_24V': tc[15, 1:],
-        'Agilent_control_50V': tc[16, 1:],
-        'Agilent_control_80V': tc[17, 1:],
-        'Power_control': tc[18, 1:],
-        'Lid_control': tc[19, 1:],
-        'Ratescan': tc[20, 1:],
-        'Magic_Weather': tc[21, 1:],
-        'TNG_Weather': tc[22, 1:],
-        'Magic_Lidar': tc[23, 1:],
-        'Temperature': tc[24, 1:],
-        'Chat_server': tc[25, 1:],
-        'Skype_client': tc[26, 1:],
-        'Free_disk_space_in_TB': str2float(tc[27, 1]),
-        'Smartfact_runtime': tc[28, 1:],
+        'PFmini_control': tc[13, 1:],
+        'GPS_control': tc[14, 1:],
+        'SQM_control': tc[15, 1:],
+        'Agilent_control_24V': tc[16, 1:],
+        'Agilent_control_50V': tc[17, 1:],
+        'Agilent_control_80V': tc[18, 1:],
+        'Power_control': tc[19, 1:],
+        'Lid_control': tc[20, 1:],
+        'Ratescan': tc[21, 1:],
+        'Magic_Weather': tc[22, 1:],
+        'TNG_Weather': tc[23, 1:],
+        'Magic_Lidar': tc[24, 1:],
+        'Temperature': tc[25, 1:],
+        'Chat_server': tc[26, 1:],
+        'Skype_client': tc[27, 1:],
+        'Free_space_newdaq_in_TB': str2float(tc[28, 1]),
+        'Free_space_daq_in_TB': str2float(tc[29, 1]),
+        'Smartfact_runtime': tc[30, 1:],
     }
 
 
