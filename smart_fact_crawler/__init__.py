@@ -88,6 +88,7 @@ class SmartFact(object):
         self.camera_climate = camera_climate
         self.main_page = main_page
         self.trigger_rate = trigger_rate
+        self.errorhist = errorhist
 
     def all(self):
         functions = inspect.getmembers(self, predicate=inspect.isfunction)
@@ -305,7 +306,7 @@ def trigger_rate(url=smartfacturl + 'trigger.data'):
 
 def errorhist(url=smartfacturl + 'errorhist.data'):
     tc = TableCrawler(url)
-    history = tc.page_payload[1].split("<->")[1].split("<br/>")
+    history = [h for h in tc[1, 1].split("<->")[1].split("<br/>") if len(h)]
     return {
         'Time_Stamp': smartfact_time2datetime(tc[0, 0]),
         'history': history,
