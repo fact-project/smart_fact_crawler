@@ -4,6 +4,7 @@ from collections import defaultdict
 import time
 import random
 from datetime import datetime
+from datetime import timedelta
 import requests
 import inspect
 import html
@@ -141,24 +142,36 @@ def sqm(url=smartfacturl + 'sqm.data'):
 
 def sun(url=smartfacturl + 'sun.data'):
 
-    def hhmm2ms(hhmm):
-        return int(hhmm[0:2]) * 3600 * 1000 + int(hhmm[3:5]) * 60 * 1000
+    def next_datetime_from_hhmm_string(hhmm):
+        now = datetime.utcnow()
+        now_tuple = now.timetuple()
+        hour = int(hhmm[0:2])
+        minute = int(hhmm[3:5])
+
+        new_date = datetime(
+            now.year,
+            now.month,
+            now.day,
+            hour,
+            minute,
+            0)
+        if not new_date > now:
+            new_date += timedelta(days=1)
+
+        return new_date
+
 
     tc = TableCrawler(url)
-    time_stamp = smartfact_time2datetime(tc[0, 0])
-    date_ms = str2float(tc[0, 0]) - time_stamp.hour * 3600 * 1000 - \
-        time_stamp.minute * 60 * 1000 - time_stamp.second * 1000
-    next_day_ms = 24 * 3600 * 1000
     return {
-        'Time_Stamp': time_stamp,
-        'End_of_dark_time':         smartfact_time2datetime(date_ms + next_day_ms + hhmm2ms(tc[1, 1])),
-        'End_of_astro_twilight':    smartfact_time2datetime(date_ms + next_day_ms + hhmm2ms(tc[2, 1])),
-        'End_of_nautic_twilight':   smartfact_time2datetime(date_ms + next_day_ms + hhmm2ms(tc[3, 1])),
-        'Start_of_day_time':        smartfact_time2datetime(date_ms + next_day_ms + hhmm2ms(tc[4, 1])),
-        'End_of_day_time':          smartfact_time2datetime(date_ms + hhmm2ms(tc[5, 1])),
-        'Start_of_nautic_twilight': smartfact_time2datetime(date_ms + hhmm2ms(tc[6, 1])),
-        'Start_of_astro_twilight':  smartfact_time2datetime(date_ms + hhmm2ms(tc[7, 1])),
-        'Start_of_dark_time':       smartfact_time2datetime(date_ms + hhmm2ms(tc[8, 1])),
+        '0Time_Stamp': smartfact_time2datetime(tc[0, 0]),
+        '1End_of_dark_time':         next_datetime_from_hhmm_string(tc[1, 1]),
+        '2End_of_astro_twilight':    next_datetime_from_hhmm_string(tc[2, 1]),
+        '3End_of_nautic_twilight':   next_datetime_from_hhmm_string(tc[3, 1]),
+        '4Start_of_day_time':        next_datetime_from_hhmm_string(tc[4, 1]),
+        '5End_of_day_time':          next_datetime_from_hhmm_string(tc[5, 1]),
+        '6Start_of_nautic_twilight': next_datetime_from_hhmm_string(tc[6, 1]),
+        '7Start_of_astro_twilight':  next_datetime_from_hhmm_string(tc[7, 1]),
+        '8Start_of_dark_time':       next_datetime_from_hhmm_string(tc[8, 1]),
     }
 
 
@@ -283,9 +296,18 @@ def main_page(url=smartfacturl + 'fact.data'):
         'Wind_speed_in_km_per_h': str2float(tc[4, 2]),
     }
 
+
 def trigger_rate(url=smartfacturl + 'trigger.data'):
     tc = TableCrawler(url)
     return {
         'Time_Stamp': smartfact_time2datetime(tc[0, 0]),
         'Trigger_Rate_in_1_per_s': str2float(tc[1, 1]),
+    }
+
+def errorhist(url=smartfacturl + 'errorhist.data'):
+    tc = TableCrawler(url)
+    history = tc.page_payload[1].split("<->")[1].split("<br/>")
+    return {
+        'Time_Stamp': smartfact_time2datetime(tc[0, 0]),
+        'history': history,
     }
