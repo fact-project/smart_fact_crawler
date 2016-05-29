@@ -144,7 +144,6 @@ def sun(url=smartfacturl + 'sun.data'):
 
     def next_datetime_from_hhmm_string(hhmm):
         now = datetime.utcnow()
-        now_tuple = now.timetuple()
         hour = int(hhmm[0:2])
         minute = int(hhmm[3:5])
 
@@ -163,15 +162,15 @@ def sun(url=smartfacturl + 'sun.data'):
 
     tc = TableCrawler(url)
     return {
-        '0Time_Stamp': smartfact_time2datetime(tc[0, 0]),
-        '1End_of_dark_time':         next_datetime_from_hhmm_string(tc[1, 1]),
-        '2End_of_astro_twilight':    next_datetime_from_hhmm_string(tc[2, 1]),
-        '3End_of_nautic_twilight':   next_datetime_from_hhmm_string(tc[3, 1]),
-        '4Start_of_day_time':        next_datetime_from_hhmm_string(tc[4, 1]),
-        '5End_of_day_time':          next_datetime_from_hhmm_string(tc[5, 1]),
-        '6Start_of_nautic_twilight': next_datetime_from_hhmm_string(tc[6, 1]),
-        '7Start_of_astro_twilight':  next_datetime_from_hhmm_string(tc[7, 1]),
-        '8Start_of_dark_time':       next_datetime_from_hhmm_string(tc[8, 1]),
+        'Time_Stamp': smartfact_time2datetime(tc[0, 0]),
+        'End_of_dark_time':         next_datetime_from_hhmm_string(tc[1, 1]),
+        'End_of_astro_twilight':    next_datetime_from_hhmm_string(tc[2, 1]),
+        'End_of_nautic_twilight':   next_datetime_from_hhmm_string(tc[3, 1]),
+        'Start_of_day_time':        next_datetime_from_hhmm_string(tc[4, 1]),
+        'End_of_day_time':          next_datetime_from_hhmm_string(tc[5, 1]),
+        'Start_of_nautic_twilight': next_datetime_from_hhmm_string(tc[6, 1]),
+        'Start_of_astro_twilight':  next_datetime_from_hhmm_string(tc[7, 1]),
+        'Start_of_dark_time':       next_datetime_from_hhmm_string(tc[8, 1]),
     }
 
 
