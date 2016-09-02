@@ -153,15 +153,15 @@ def weather(url=smartfacturl + 'weather.data'):
     tc = TableCrawler(url)
     return {
         'Time_Stamp': smartfact_time2datetime(tc[0, 0]),
-        'Sun_in_Percent': tc[1, 1:],
-        'Moon_in_Percent': tc[2, 1:],
+        'Sun_in_Percent': tc[1, 1],
+        'Moon_in_Percent': tc[2, 1],
         'Temperature_in_C': str2float(tc[3, 1]),
         'Dew_point_in_C': str2float(tc[4, 1]),
         'Humidity_in_Percent': str2float(tc[5, 1]),
         'Pressure_in_hPa': str2float(tc[6, 1]),
         'Wind_speed_in_km_per_h': str2float(tc[7, 1]),
         'Wind_gusts_in_km_per_h': str2float(tc[8, 1]),
-        'Wind_direction': tc[9, 1:],
+        'Wind_direction': tc[9, 1],
         'Dust_TNG_in_ug_per_m3': str2float(tc[10, 1]),
     }
 
