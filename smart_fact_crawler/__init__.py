@@ -40,10 +40,10 @@ class TableCrawler(object):
                 break
 
     def _build_page_payload(self):
-        self.page_payload = list(map(
-            lambda x: list(map(html.unescape, x.split('\t'))),
-            self.web_page.text.splitlines(),
-        ))
+        self.page_payload = [
+            [html.unescape(elem) for elem in line.split('\t')]
+            for line in self.web_page.text.splitlines()
+        ]
 
 
 def str2float(text):
