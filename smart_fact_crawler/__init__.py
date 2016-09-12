@@ -6,6 +6,7 @@ import random
 from datetime import datetime
 import requests
 import inspect
+import html
 
 
 smartfacturl = "http://fact-project.org/smartfact/data/"
@@ -20,11 +21,8 @@ class TableCrawler(object):
 
     def __getitem__(self, index):
         row, col = index
-        item = self.page_payload[row].split()[col]
-        if isinstance(col, slice):
-            return " ".join(item)
-        else:
-            return item
+        item = self.page_payload[row][col]
+        return item
 
     def _request_web_page(self, url):
         while True:
@@ -42,7 +40,10 @@ class TableCrawler(object):
                 break
 
     def _build_page_payload(self):
-        self.page_payload = self.web_page.text.split('\n')
+        self.page_payload = [
+            [html.unescape(elem) for elem in line.split('\t')]
+            for line in self.web_page.text.splitlines()
+        ]
 
 
 def str2float(text):
@@ -83,11 +84,13 @@ class SmartFact(object):
 
         return full
 
+
 def drive():
     return {
         "tracking": tracking(),
         "pointing": pointing(),
     }
+
 
 def tracking(url=smartfacturl + 'tracking.data'):
     tc = TableCrawler(url)
@@ -101,6 +104,7 @@ def tracking(url=smartfacturl + 'tracking.data'):
         'Control_Deviation_in_ArcSec': str2float(tc[6, 1]),
         'Distance_to_Moon_in_Deg': tc[7, 1],
     }
+
 
 def pointing(url=smartfacturl + 'pointing.data'):
     tc = TableCrawler(url)
@@ -149,15 +153,15 @@ def weather(url=smartfacturl + 'weather.data'):
     tc = TableCrawler(url)
     return {
         'Time_Stamp': smartfact_time2datetime(tc[0, 0]),
-        'Sun_in_Percent': tc[1, 1:],
-        'Moon_in_Percent': tc[2, 1:],
+        'Sun_in_Percent': tc[1, 1],
+        'Moon_in_Percent': tc[2, 1],
         'Temperature_in_C': str2float(tc[3, 1]),
         'Dew_point_in_C': str2float(tc[4, 1]),
         'Humidity_in_Percent': str2float(tc[5, 1]),
         'Pressure_in_hPa': str2float(tc[6, 1]),
         'Wind_speed_in_km_per_h': str2float(tc[7, 1]),
         'Wind_gusts_in_km_per_h': str2float(tc[8, 1]),
-        'Wind_direction': tc[9, 1:],
+        'Wind_direction': tc[9, 1],
         'Dust_TNG_in_ug_per_m3': str2float(tc[10, 1]),
     }
 
@@ -180,36 +184,36 @@ def status(url=smartfacturl + 'status.data'):
     tc = TableCrawler(url)
     return {
         'Time_Stamp': smartfact_time2datetime(tc[0, 0]),
-        'DIM': tc[1, 1:],
-        'Dim_Control': tc[2, 1:],
-        'MCP': tc[3, 1:],
-        'Datalogger': tc[4, 1:],
-        'Drive_control': tc[5, 1:],
-        'Drive_PC_time_check': tc[6, 1:],
-        'FAD_control': tc[7, 1:],
-        'FTM_control': tc[8, 1:],
-        'Bias_control': tc[9, 1:],
-        'Feedback': tc[10, 1:],
-        'Rate_control': tc[11, 1:],
-        'FSC_control': tc[12, 1:],
-        'PFmini_control': tc[13, 1:],
-        'GPS_control': tc[14, 1:],
-        'SQM_control': tc[15, 1:],
-        'Agilent_control_24V': tc[16, 1:],
-        'Agilent_control_50V': tc[17, 1:],
-        'Agilent_control_80V': tc[18, 1:],
-        'Power_control': tc[19, 1:],
-        'Lid_control': tc[20, 1:],
-        'Ratescan': tc[21, 1:],
-        'Magic_Weather': tc[22, 1:],
-        'TNG_Weather': tc[23, 1:],
-        'Magic_Lidar': tc[24, 1:],
-        'Temperature': tc[25, 1:],
-        'Chat_server': tc[26, 1:],
-        'Skype_client': tc[27, 1:],
+        'DIM': tc[1, 1],
+        'Dim_Control': tc[2, 1],
+        'MCP': tc[3, 1],
+        'Datalogger': tc[4, 1],
+        'Drive_control': tc[5, 1],
+        'Drive_PC_time_check': tc[6, 1],
+        'FAD_control': tc[7, 1],
+        'FTM_control': tc[8, 1],
+        'Bias_control': tc[9, 1],
+        'Feedback': tc[10, 1],
+        'Rate_control': tc[11, 1],
+        'FSC_control': tc[12, 1],
+        'PFmini_control': tc[13, 1],
+        'GPS_control': tc[14, 1],
+        'SQM_control': tc[15, 1],
+        'Agilent_control_24V': tc[16, 1],
+        'Agilent_control_50V': tc[17, 1],
+        'Agilent_control_80V': tc[18, 1],
+        'Power_control': tc[19, 1],
+        'Lid_control': tc[20, 1],
+        'Ratescan': tc[21, 1],
+        'Magic_Weather': tc[22, 1],
+        'TNG_Weather': tc[23, 1],
+        'Magic_Lidar': tc[24, 1],
+        'Temperature': tc[25, 1],
+        'Chat_server': tc[26, 1],
+        'Skype_client': tc[27, 1],
         'Free_space_newdaq_in_TB': str2float(tc[28, 1]),
         'Free_space_daq_in_TB': str2float(tc[29, 1]),
-        'Smartfact_runtime': tc[30, 1:],
+        'Smartfact_runtime': tc[30, 1],
     }
 
 
