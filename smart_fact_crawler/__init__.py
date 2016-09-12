@@ -51,7 +51,6 @@ class TableCrawler(object):
         self._build_page_payload()
 
     def _acknowledge_error_and_wait_a_moment(self):
-        print('acknowledge_error')
         self.connection_error_counter += 1
         if self.connection_error_counter >= 10:
             raise
