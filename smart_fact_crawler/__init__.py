@@ -2,10 +2,14 @@
 from datetime import datetime
 from datetime import timedelta
 
-from .tools import str2float, smartfact_time2datetime
+from .tools import str2float as s2f
+from .tools import smartfact_time2datetime as sft2dt
 from .table_crawler import TableCrawler
 
 from collections import namedtuple
+
+def to_namedtuple(name, dictionary):
+    return namedtuple(name, dictionary.keys())(**dictionary)
 
 smartfacturl = "http://fact-project.org/smartfact/data/"
 
@@ -36,35 +40,35 @@ def drive():
 
 def tracking(url=smartfacturl + 'tracking.data'):
     tc = TableCrawler(url)
-    return {
-        'Time_Stamp': smartfact_time2datetime(tc[0, 0]),
-        'Source_Name': tc[1, 1:],
-        'Right_Ascention_in_h': str2float(tc[2, 1]),
-        'Declination_in_Deg': str2float(tc[3, 1]),
-        'Zenith_Distance_in_Deg': str2float(tc[4, 1]),
-        'Azimuth_in_Deg': str2float(tc[5, 1]),
-        'Control_Deviation_in_ArcSec': str2float(tc[6, 1]),
-        'Distance_to_Moon_in_Deg': tc[7, 1],
-    }
+    return to_namedtuple('TrackingPage', {
+        'timestamp': (sft2dt(tc[0, 0]), None),
+        'source_name': (tc[1, 1:], None),
+        'right_ascension': (s2f(tc[2, 1]), 'h'),
+        'declination': (s2f(tc[3, 1]), 'deg'),
+        'zenith_distance': (s2f(tc[4, 1]), 'deg'),
+        'azimuth': (s2f(tc[5, 1]), 'deg'),
+        'control_deviation': (s2f(tc[6, 1]), 'arcsec'),
+        'moon_distance': (tc[7, 1], 'h'),
+    })
 
 
 def pointing(url=smartfacturl + 'pointing.data'):
     tc = TableCrawler(url)
     return {
-        'Time_Stamp': smartfact_time2datetime(tc[0, 0]),
-        'Azimuth_in_Deg': str2float(tc[1, 1]),
-        'Zenith_Distance_in_Deg': str2float(tc[2, 1]),
+        'timestamp': sft2dt(tc[0, 0]),
+        'Azimuth_in_Deg': s2f(tc[1, 1]),
+        'Zenith_Distance_in_Deg': s2f(tc[2, 1]),
     }
 
 
 def sqm(url=smartfacturl + 'sqm.data'):
     tc = TableCrawler(url)
     return {
-        'Time_Stamp': smartfact_time2datetime(tc[0, 0]),
-        'Magnitude': str2float(tc[1, 1]),
-        'Sensor_Frequency_in_Hz': str2float(tc[2, 1]),
-        'Sensor_Period_in_s': str2float(tc[4, 1]),
-        'Sensor_Temperature_in_C': str2float(tc[5, 1]),
+        'timestamp': sft2dt(tc[0, 0]),
+        'Magnitude': s2f(tc[1, 1]),
+        'Sensor_Frequency_in_Hz': s2f(tc[2, 1]),
+        'Sensor_Period_in_s': s2f(tc[4, 1]),
+        'Sensor_Temperature_in_C': s2f(tc[5, 1]),
     }
 
 
@@ -83,7 +87,7 @@ def sun(url=smartfacturl + 'sun.data'):
 
     tc = TableCrawler(url)
     return {
-        'Time_Stamp': smartfact_time2datetime(tc[0, 0]),
+        'timestamp': sft2dt(tc[0, 0]),
         'End_of_dark_time':         next_datetime_from_hhmm_string(tc[1, 1]),
         'End_of_astro_twilight':    next_datetime_from_hhmm_string(tc[2, 1]),
         'End_of_nautic_twilight':   next_datetime_from_hhmm_string(tc[3, 1]),
@@ -98,47 +102,47 @@ def sun(url=smartfacturl + 'sun.data'):
 def weather(url=smartfacturl + 'weather.data'):
     tc = TableCrawler(url)
     return {
-        'Time_Stamp': smartfact_time2datetime(tc[0, 0]),
+        'timestamp': sft2dt(tc[0, 0]),
         'Sun_in_Percent': tc[1, 1],
         'Moon_in_Percent': tc[2, 1],
-        'Temperature_in_C': str2float(tc[3, 1]),
-        'Dew_point_in_C': str2float(tc[4, 1]),
-        'Humidity_in_Percent': str2float(tc[5, 1]),
-        'Pressure_in_hPa': str2float(tc[6, 1]),
-        'Wind_speed_in_km_per_h': str2float(tc[7, 1]),
-        'Wind_gusts_in_km_per_h': str2float(tc[8, 1]),
+        'Temperature_in_C': s2f(tc[3, 1]),
+        'Dew_point_in_C': s2f(tc[4, 1]),
+        'Humidity_in_Percent': s2f(tc[5, 1]),
+        'Pressure_in_hPa': s2f(tc[6, 1]),
+        'Wind_speed_in_km_per_h': s2f(tc[7, 1]),
+        'Wind_gusts_in_km_per_h': s2f(tc[8, 1]),
         'Wind_direction': tc[9, 1],
-        'Dust_TNG_in_ug_per_m3': str2float(tc[10, 1]),
+        'Dust_TNG_in_ug_per_m3': s2f(tc[10, 1]),
     }
 
 
 def sipm_currents(url=smartfacturl + 'current.data'):
     tc = TableCrawler(url)
     return {
-        'Time_Stamp': smartfact_time2datetime(tc[0, 0]),
+        'timestamp': sft2dt(tc[0, 0]),
         'Clibrated': tc[1, 1],
-        'Min_current_per_GAPD_in_uA': str2float(tc[2, 1]),
-        'Med_current_per_GAPD_in_uA': str2float(tc[3, 1]),
-        'Avg_current_per_GAPD_in_uA': str2float(tc[4, 1]),
-        'Max_current_per_GAPD_in_uA': str2float(tc[5, 1]),
+        'Min_current_per_GAPD_in_uA': s2f(tc[2, 1]),
+        'Med_current_per_GAPD_in_uA': s2f(tc[3, 1]),
+        'Avg_current_per_GAPD_in_uA': s2f(tc[4, 1]),
+        'Max_current_per_GAPD_in_uA': s2f(tc[5, 1]),
         # The W is stucked to the float and needs to be removed
-        'Power_camera_GAPD_in_W': str2float(tc[6, 1][:-1]),
+        'Power_camera_GAPD_in_W': s2f(tc[6, 1][:-1]),
     }
 
 def sipm_voltages(url=smartfacturl + 'voltage.data'):
     tc = TableCrawler(url)
     return {
-        'Time_Stamp': smartfact_time2datetime(tc[0, 0]),
-        'Min_voltage_in_V': str2float(tc[1, 1]),
-        'Med_voltage_in_V': str2float(tc[2, 1]),
-        'Avg_voltage_in_V': str2float(tc[3, 1]),
-        'Max_voltage_in_V': str2float(tc[4, 1]),
+        'timestamp': sft2dt(tc[0, 0]),
+        'Min_voltage_in_V': s2f(tc[1, 1]),
+        'Med_voltage_in_V': s2f(tc[2, 1]),
+        'Avg_voltage_in_V': s2f(tc[3, 1]),
+        'Max_voltage_in_V': s2f(tc[4, 1]),
     }
 
 def status(url=smartfacturl + 'status.data'):
     tc = TableCrawler(url)
     return {
-        'Time_Stamp': smartfact_time2datetime(tc[0, 0]),
+        'timestamp': sft2dt(tc[0, 0]),
         'DIM': tc[1, 1],
         'Dim_Control': tc[2, 1],
         'MCP': tc[3, 1],
@@ -166,8 +170,8 @@ def status(url=smartfacturl + 'status.data'):
         'Temperature': tc[25, 1],
         'Chat_server': tc[26, 1],
         'Skype_client': tc[27, 1],
-        'Free_space_newdaq_in_TB': str2float(tc[28, 1]),
-        'Free_space_daq_in_TB': str2float(tc[29, 1]),
+        'Free_space_newdaq_in_TB': s2f(tc[28, 1]),
+        'Free_space_daq_in_TB': s2f(tc[29, 1]),
         'Smartfact_runtime': tc[30, 1],
     }
 
@@ -175,7 +179,7 @@ def status(url=smartfacturl + 'status.data'):
 def container_temperature(url=smartfacturl + 'temperature.data'):
     tc = TableCrawler(url)
     return {
-        'Time_Stamp': smartfact_time2datetime(tc[0, 0]),
+        'timestamp': sft2dt(tc[0, 0]),
         '24h_min_temperature_in_C': tc[1, 1],
         'Current_temperature_in_C': tc[2, 1],
         '24h_max_temperature_in_C': tc[3, 1],
@@ -185,49 +189,49 @@ def container_temperature(url=smartfacturl + 'temperature.data'):
 def current_source(url=smartfacturl + 'source.data'):
     tc = TableCrawler(url)
     return {
-        'Time_Stamp': smartfact_time2datetime(tc[0, 0]),
+        'timestamp': sft2dt(tc[0, 0]),
         'Source_Name': tc[1, 1:],
-        'Right_Ascention_in_h': str2float(tc[2, 1]),
-        'Declination_in_Deg': str2float(tc[3, 1]),
-        'Wobble_offset_in_Deg': str2float(tc[4, 1]),
-        'Wobble_angle_in_Deg': str2float(tc[5, 1]),
+        'Right_Ascention_in_h': s2f(tc[2, 1]),
+        'Declination_in_Deg': s2f(tc[3, 1]),
+        'Wobble_offset_in_Deg': s2f(tc[4, 1]),
+        'Wobble_angle_in_Deg': s2f(tc[5, 1]),
     }
 
 
 def camera_climate(url=smartfacturl + 'fsc.data'):
     tc = TableCrawler(url)
     return {
-        'Time_Stamp': smartfact_time2datetime(tc[0, 0]),
-        'Avg_humidity_in_percent': str2float(tc[1, 1]),
-        'Max_rel_temp_in_C': str2float(tc[2, 1]),
-        'Avg_rel_temp_in_C': str2float(tc[3, 1]),
-        'Min_rel_temp_in_C': str2float(tc[4, 1]),
+        'timestamp': sft2dt(tc[0, 0]),
+        'Avg_humidity_in_percent': s2f(tc[1, 1]),
+        'Max_rel_temp_in_C': s2f(tc[2, 1]),
+        'Avg_rel_temp_in_C': s2f(tc[3, 1]),
+        'Min_rel_temp_in_C': s2f(tc[4, 1]),
     }
 
 
 def main_page(url=smartfacturl + 'fact.data'):
     tc = TableCrawler(url)
     return {
-        'Time_Stamp_1': smartfact_time2datetime(tc[0, 0]),
-        'Time_Stamp_2': smartfact_time2datetime(tc[0, 1]),
+        'Time_Stamp_1': sft2dt(tc[0, 0]),
+        'Time_Stamp_2': sft2dt(tc[0, 1]),
         'System_Status': ' '.join(tc[1, 1:]),
-        'Rel_camera_temp_in_C': str2float(tc[3, 1]),
-        'Humidity_in_Percent': str2float(tc[4, 1]),
-        'Wind_speed_in_km_per_h': str2float(tc[4, 2]),
+        'Rel_camera_temp_in_C': s2f(tc[3, 1]),
+        'Humidity_in_Percent': s2f(tc[4, 1]),
+        'Wind_speed_in_km_per_h': s2f(tc[4, 2]),
     }
 
 
 def trigger_rate(url=smartfacturl + 'trigger.data'):
     tc = TableCrawler(url)
     return {
-        'Time_Stamp': smartfact_time2datetime(tc[0, 0]),
-        'Trigger_Rate_in_1_per_s': str2float(tc[1, 1]),
+        'timestamp': sft2dt(tc[0, 0]),
+        'Trigger_Rate_in_1_per_s': s2f(tc[1, 1]),
     }
 
 def errorhist(url=smartfacturl + 'errorhist.data'):
     tc = TableCrawler(url)
     history = [h for h in tc[1, 1].split("<->")[1].split("<br/>") if len(h)]
     return {
-        'Time_Stamp': smartfact_time2datetime(tc[0, 0]),
+        'timestamp': sft2dt(tc[0, 0]),
         'history': history,
     }
