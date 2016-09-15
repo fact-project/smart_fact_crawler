@@ -69,7 +69,8 @@ class SmartFact(object):
         self.sqm = sqm
         self.sun = sun
         self.weather = weather
-        self.currents = currents
+        self.sipm_currents = sipm_currents
+        self.sipm_voltages = sipm_voltages
         self.container_temperature = container_temperature
         self.current_source = current_source
         self.camera_climate = camera_climate
@@ -167,7 +168,7 @@ def weather(url=smartfacturl + 'weather.data'):
     }
 
 
-def currents(url=smartfacturl + 'current.data'):
+def sipm_currents(url=smartfacturl + 'current.data'):
     tc = TableCrawler(url)
     return {
         'Time_Stamp': smartfact_time2datetime(tc[0, 0]),
@@ -180,6 +181,15 @@ def currents(url=smartfacturl + 'current.data'):
         'Power_camera_GAPD_in_W': str2float(tc[6, 1][:-1]),
     }
 
+def sipm_voltages(url=smartfacturl + 'voltage.data'):
+    tc = TableCrawler(url)
+    return {
+        'Time_Stamp': smartfact_time2datetime(tc[0, 0]),
+        'Min_voltage_in_V': str2float(tc[1, 1]),
+        'Med_voltage_in_V': str2float(tc[2, 1]),
+        'Avg_voltage_in_V': str2float(tc[3, 1]),
+        'Max_voltage_in_V': str2float(tc[4, 1]),
+    }
 
 def status(url=smartfacturl + 'status.data'):
     tc = TableCrawler(url)
