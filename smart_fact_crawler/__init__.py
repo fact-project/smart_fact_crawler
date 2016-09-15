@@ -80,11 +80,13 @@ class SmartFact(object):
         self.sqm = sqm
         self.sun = sun
         self.weather = weather
-        self.currents = currents
+        self.sipm_currents = sipm_currents
+        self.sipm_voltages = sipm_voltages
         self.container_temperature = container_temperature
         self.current_source = current_source
         self.camera_climate = camera_climate
         self.main_page = main_page
+        self.trigger_rate = trigger_rate
 
     def all(self):
         functions = inspect.getmembers(self, predicate=inspect.isfunction)
@@ -177,7 +179,7 @@ def weather(url=smartfacturl + 'weather.data'):
     }
 
 
-def currents(url=smartfacturl + 'current.data'):
+def sipm_currents(url=smartfacturl + 'current.data'):
     tc = TableCrawler(url)
     return {
         'Time_Stamp': smartfact_time2datetime(tc[0, 0]),
@@ -190,6 +192,15 @@ def currents(url=smartfacturl + 'current.data'):
         'Power_camera_GAPD_in_W': str2float(tc[6, 1][:-1]),
     }
 
+def sipm_voltages(url=smartfacturl + 'voltage.data'):
+    tc = TableCrawler(url)
+    return {
+        'Time_Stamp': smartfact_time2datetime(tc[0, 0]),
+        'Min_voltage_in_V': str2float(tc[1, 1]),
+        'Med_voltage_in_V': str2float(tc[2, 1]),
+        'Avg_voltage_in_V': str2float(tc[3, 1]),
+        'Max_voltage_in_V': str2float(tc[4, 1]),
+    }
 
 def status(url=smartfacturl + 'status.data'):
     tc = TableCrawler(url)
@@ -270,4 +281,11 @@ def main_page(url=smartfacturl + 'fact.data'):
         'Rel_camera_temp_in_C': str2float(tc[3, 1]),
         'Humidity_in_Percent': str2float(tc[4, 1]),
         'Wind_speed_in_km_per_h': str2float(tc[4, 2]),
+    }
+
+def trigger_rate(url=smartfacturl + 'trigger.data'):
+    tc = TableCrawler(url)
+    return {
+        'Time_Stamp': smartfact_time2datetime(tc[0, 0]),
+        'Trigger_Rate_in_1_per_s': str2float(tc[1, 1]),
     }
