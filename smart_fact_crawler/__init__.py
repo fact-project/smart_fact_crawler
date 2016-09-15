@@ -1,103 +1,30 @@
 # -*- encoding:utf-8 -*-
-from __future__ import print_function, absolute_import
-from collections import defaultdict
-import time
-import random
 from datetime import datetime
 from datetime import timedelta
-import requests
-import inspect
-import html
 
+from .tools import str2float, smartfact_time2datetime
+from .table_crawler import TableCrawler
+
+from collections import namedtuple
 
 smartfacturl = "http://fact-project.org/smartfact/data/"
 
-
-class TableCrawler(object):
-    def __init__(self, url):
-        self.url = url
-        self.connection_error_counter = 0
-        self._load_payload()
-
-    def _load_payload(self):
-        self._request_web_page()
-        self._build_page_payload()
-
-    def _request_web_page(self):
-        while True:
-            try:
-                self.web_page = requests.get(self.url, timeout=15.)
-                self.connection_error_counter = 0
-                break
-            except requests.exceptions.ConnectionError:
-                self._acknowledge_error_and_wait_a_moment()
-
-    def _build_page_payload(self):
-        self.page_payload = [
-            [html.unescape(elem) for elem in line.split('\t')]
-            for line in self.web_page.text.splitlines()
-        ]
-
-    def _acknowledge_error_and_wait_a_moment(self):
-        self.connection_error_counter += 1
-        if self.connection_error_counter >= 10:
-            raise
-        else:
-            # sleep between 1 and 2 seconds.
-            time.sleep(1. + random.random())        
-
-    def __getitem__(self, index):
-        row, col = index
-        while True:
-            try:
-                item = self.page_payload[row][col]
-                self.connection_error_counter = 0
-                break
-            except IndexError:
-                self._acknowledge_error_and_wait_a_moment()
-        return item
-
-
-def str2float(text):
-    try:
-        number = float(text)
-    except:
-        number = float("nan")
-
-    return number
-
-
-def smartfact_time2datetime(fact_time_stamp):
-    return datetime.utcfromtimestamp(
-        str2float(fact_time_stamp) / 1000.0
-    )
-
-
-class SmartFact(object):
-
-    def __init__(self):
-        self.status = status
-        self.drive = drive
-        self.sqm = sqm
-        self.sun = sun
-        self.weather = weather
-        self.sipm_currents = sipm_currents
-        self.sipm_voltages = sipm_voltages
-        self.container_temperature = container_temperature
-        self.current_source = current_source
-        self.camera_climate = camera_climate
-        self.main_page = main_page
-        self.trigger_rate = trigger_rate
-        self.errorhist = errorhist
-
-    def all(self):
-        functions = inspect.getmembers(self, predicate=inspect.isfunction)
-
-        full = dict()
-        for function in functions:
-            full[function[0]] = function[1]()
-
-        return full
+def all(self):
+    functions = [
+        status,
+        drive,
+        sqm,
+        sun,
+        weather,
+        sipm_currents,
+        sipm_voltages,
+        container_temperature,
+        current_source,
+        camera_climate,
+        main_page,
+        trigger_rate,
+        errorhist]
+    return {f.__name__: f() for f in functions}
 
 
 def drive():
@@ -148,16 +75,9 @@ def sun(url=smartfacturl + 'sun.data'):
         hour = int(hhmm[0:2])
         minute = int(hhmm[3:5])
 
-        new_date = datetime(
-            now.year,
-            now.month,
-            now.day,
-            hour,
-            minute,
-            0)
+        new_date = now.replace(hour=hour, minute=minute, second=0)
         if not new_date > now:
             new_date += timedelta(days=1)
-
         return new_date
 
 
