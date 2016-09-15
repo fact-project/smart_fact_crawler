@@ -74,6 +74,7 @@ class SmartFact(object):
         self.current_source = current_source
         self.camera_climate = camera_climate
         self.main_page = main_page
+        self.trigger_rate = trigger_rate
 
     def all(self):
         functions = inspect.getmembers(self, predicate=inspect.isfunction)
@@ -259,4 +260,11 @@ def main_page(url=smartfacturl + 'fact.data'):
         'Rel_camera_temp_in_C': str2float(tc[3, 1]),
         'Humidity_in_Percent': str2float(tc[4, 1]),
         'Wind_speed_in_km_per_h': str2float(tc[4, 2]),
+    }
+
+def trigger_rate(url=smartfacturl + 'trigger.data'):
+    tc = TableCrawler(url)
+    return {
+        'Time_Stamp': smartfact_time2datetime(tc[0, 0]),
+        'Trigger_Rate_in_1_per_s': str2float(tc[1, 1]),
     }
