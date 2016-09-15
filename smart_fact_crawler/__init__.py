@@ -179,6 +179,15 @@ def currents(url=smartfacturl + 'current.data'):
         'Power_camera_GAPD_in_W': str2float(tc[6, 1][:-1]),
     }
 
+def voltages(url=smartfacturl + 'voltage.data'):
+    tc = TableCrawler(url)
+    return {
+        'Time_Stamp': smartfact_time2datetime(tc[0, 0]),
+        'Min_voltage_in_V': str2float(tc[1, 1]),
+        'Med_voltage_in_V': str2float(tc[2, 1]),
+        'Avg_voltage_in_V': str2float(tc[3, 1]),
+        'Max_voltage_in_V': str2float(tc[4, 1]),
+    }
 
 def status(url=smartfacturl + 'status.data'):
     tc = TableCrawler(url)
