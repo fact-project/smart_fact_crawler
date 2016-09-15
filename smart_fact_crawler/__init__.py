@@ -70,6 +70,7 @@ class SmartFact(object):
         self.sun = sun
         self.weather = weather
         self.currents = currents
+        self.voltages = voltages
         self.container_temperature = container_temperature
         self.current_source = current_source
         self.camera_climate = camera_climate
