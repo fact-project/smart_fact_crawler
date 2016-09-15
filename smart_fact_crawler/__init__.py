@@ -266,5 +266,5 @@ def trigger_rate(url=smartfacturl + 'trigger.data'):
     tc = TableCrawler(url)
     return {
         'Time_Stamp': smartfact_time2datetime(tc[0, 0]),
-        'Trigger_Rate_in_Bq': str2float(tc[1, 1]),
+        'Trigger_Rate_in_1_per_s': str2float(tc[1, 1]),
     }
