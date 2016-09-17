@@ -8,10 +8,12 @@ from .table_crawler import TableCrawler
 
 from collections import namedtuple
 
+smartfacturl = "http://fact-project.org/smartfact/data/"
+
+
 def to_namedtuple(name, dictionary):
     return namedtuple(name, dictionary.keys())(**dictionary)
 
-smartfacturl = "http://fact-project.org/smartfact/data/"
 
 def all():
     functions = [
@@ -28,7 +30,8 @@ def all():
         main_page,
         trigger_rate,
         errorhist]
-    return to_namedtuple('SmartFact',
+    return to_namedtuple(
+        'SmartFact',
         {f.__name__: f() for f in functions}
     )
 
@@ -70,7 +73,7 @@ def sqm(url=smartfacturl + 'sqm.data'):
         'magnitude': (s2f(tc[1, 1]), '???'),
         'sensor_frequency': (s2f(tc[2, 1]), 'Hz'),
         'sensor_period': (s2f(tc[4, 1]), 's'),
-        'sensor_temperature': (s2f(tc[5, 1]), 'C'),
+        'sensor_temperature': (s2f(tc[5, 1]), 'deg_C'),
     })
 
 
@@ -108,8 +111,8 @@ def weather(url=smartfacturl + 'weather.data'):
         'timestamp': (sft2dt(tc[0, 0]), None),
         'sun': (tc[1, 1], '%'),
         'moon': (tc[2, 1], '%'),
-        'temperature': (s2f(tc[3, 1]), 'C'),
-        'dew_point': (s2f(tc[4, 1]), 'C'),
+        'temperature': (s2f(tc[3, 1]), 'deg_C'),
+        'dew_point': (s2f(tc[4, 1]), 'deg_C'),
         'humidity': (s2f(tc[5, 1]), '%'),
         'pressure': (s2f(tc[6, 1]), 'hPa'),
         'sind_speed': (s2f(tc[7, 1]), 'km/h'),
@@ -131,6 +134,7 @@ def sipm_currents(url=smartfacturl + 'current.data'):
         'power': (s2f(tc[6, 1][:-1]), 'W'),
     })
 
+
 def sipm_voltages(url=smartfacturl + 'voltage.data'):
     tc = TableCrawler(url)
     return to_namedtuple('VoltagePage', {
@@ -140,6 +144,7 @@ def sipm_voltages(url=smartfacturl + 'voltage.data'):
         'mean': (s2f(tc[3, 1]), 'V'),
         'max': (s2f(tc[4, 1]), 'V'),
     })
+
 
 def status(url=smartfacturl + 'status.data'):
     tc = TableCrawler(url)
@@ -182,9 +187,9 @@ def container_temperature(url=smartfacturl + 'temperature.data'):
     tc = TableCrawler(url)
     return to_namedtuple('ContainerTemperaturePage', {
         'timestamp': (sft2dt(tc[0, 0]), None),
-        'daily_min': (tc[1, 1], 'C'),
-        'current': (tc[2, 1], 'C'),
-        'daily_max': (tc[3, 1], 'C'),
+        'daily_min': (tc[1, 1], 'deg_C'),
+        'current': (tc[2, 1], 'deg_C'),
+        'daily_max': (tc[3, 1], 'deg_C'),
     })
 
 
@@ -205,9 +210,9 @@ def camera_climate(url=smartfacturl + 'fsc.data'):
     return to_namedtuple('CameraClimatePage', {
         'timestamp': (sft2dt(tc[0, 0]), None),
         'humidity_mean': (s2f(tc[1, 1]), '%'),
-        'relative_temperature_max': (s2f(tc[2, 1]), 'C'),
-        'relative_temperature_mean': (s2f(tc[3, 1]), 'C'),
-        'relative_temperature_min': (s2f(tc[4, 1]), 'C'),
+        'relative_temperature_max': (s2f(tc[2, 1]), 'deg_C'),
+        'relative_temperature_mean': (s2f(tc[3, 1]), 'deg_C'),
+        'relative_temperature_min': (s2f(tc[4, 1]), 'deg_C'),
     })
 
 
@@ -217,7 +222,7 @@ def main_page(url=smartfacturl + 'fact.data'):
         'timestamp_1': (sft2dt(tc[0, 0]), None),
         'timestamp_2': (sft2dt(tc[0, 1]), None),
         'system_status': (' '.join(tc[1, 1:]), None),
-        'relative_camera_temperature': (s2f(tc[3, 1]), 'C'),
+        'relative_camera_temperature': (s2f(tc[3, 1]), 'deg_C'),
         'humidity': (s2f(tc[4, 1]), '%'),
         'wind_speed': (s2f(tc[4, 2]), 'km/h'),
     })
@@ -229,6 +234,7 @@ def trigger_rate(url=smartfacturl + 'trigger.data'):
         'timestamp': (sft2dt(tc[0, 0]), None),
         'trigger_rate': (s2f(tc[1, 1]), '1/s'),
     })
+
 
 def errorhist(url=smartfacturl + 'errorhist.data'):
     tc = TableCrawler(url)
