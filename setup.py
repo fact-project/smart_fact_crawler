@@ -3,7 +3,7 @@ from distutils.core import setup
 
 setup(
     name='smart_fact_crawler',
-    version='0.1.0',
+    version='0.1.1',
     description='acquieres data published on the smartfact web page',
     url='https://github.com/fact-project/smart_fact_crawler.git',
     author='Dominik Neise, Sebastian Mueller',

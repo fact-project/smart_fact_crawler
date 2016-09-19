@@ -62,7 +62,7 @@ def tracking(url=smartfacturl + 'tracking.data'):
 def pointing(url=smartfacturl + 'pointing.data'):
     tc = TableCrawler(url)
     return to_namedtuple('PointingPage', {
-        'timestamp':sft2dt(tc[0, 0]),
+        'timestamp': sft2dt(tc[0, 0]),
         'azimuth': Quantity(s2f(tc[1, 1]), 'deg'),
         'zenith_distance': Quantity(s2f(tc[2, 1]), 'deg'),
     })
@@ -96,14 +96,14 @@ def sun(url=smartfacturl + 'sun.data'):
     tc = TableCrawler(url)
     return to_namedtuple('SunPage', {
         'timestamp': sft2dt(tc[0, 0]),
-        'End_of_dark_time': conv(tc[1, 1]),
-        'End_of_astro_twilight': conv(tc[2, 1]),
-        'End_of_nautic_twilight': conv(tc[3, 1]),
-        'Start_of_day_time': conv(tc[4, 1]),
-        'End_of_day_time': conv(tc[5, 1]),
-        'Start_of_nautic_twilight': conv(tc[6, 1]),
-        'Start_of_astro_twilight': conv(tc[7, 1]),
-        'Start_of_dark_time': conv(tc[8, 1]),
+        'end_of_dark_time': conv(tc[1, 1]),
+        'end_of_astronomical_twilight': conv(tc[2, 1]),
+        'end_of_nautical_twilight': conv(tc[3, 1]),
+        'start_of_day_time': conv(tc[4, 1]),
+        'end_of_day_time': conv(tc[5, 1]),
+        'start_of_nautical_twilight': conv(tc[6, 1]),
+        'start_of_astronomical_twilight': conv(tc[7, 1]),
+        'start_of_dark_time': conv(tc[8, 1]),
     })
 
 
