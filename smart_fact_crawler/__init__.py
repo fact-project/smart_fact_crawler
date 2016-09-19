@@ -17,7 +17,7 @@ def to_namedtuple(name, dictionary):
     return namedtuple(name, dictionary.keys())(**dictionary)
 
 
-def all():
+def smartfact():
     functions = [
         status,
         drive,
