@@ -55,7 +55,7 @@ def tracking(url=smartfacturl + 'tracking.data'):
         'zenith_distance': Quantity(s2f(tc[4, 1]), 'deg'),
         'azimuth': Quantity(s2f(tc[5, 1]), 'deg'),
         'control_deviation': Quantity(s2f(tc[6, 1]), 'arcsec'),
-        'moon_distance': Quantity(tc[7, 1], 'h'),
+        'moon_distance': Quantity(tc[7, 1], 'deg'),
     })
 
 
