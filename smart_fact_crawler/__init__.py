@@ -17,7 +17,7 @@ def to_namedtuple(name, dictionary):
     return namedtuple(name, dictionary.keys())(**dictionary)
 
 
-def all():
+def smartfact():
     functions = [
         status,
         drive,
@@ -49,13 +49,13 @@ def tracking(url=smartfacturl + 'tracking.data'):
     tc = TableCrawler(url)
     return to_namedtuple('TrackingPage', {
         'timestamp': sft2dt(tc[0, 0]),
-        'source_name': tc[1, 1:],
+        'source_name': tc[1, 1],
         'right_ascension': Quantity(s2f(tc[2, 1]), 'hourangle'),
         'declination': Quantity(s2f(tc[3, 1]), 'deg'),
         'zenith_distance': Quantity(s2f(tc[4, 1]), 'deg'),
         'azimuth': Quantity(s2f(tc[5, 1]), 'deg'),
         'control_deviation': Quantity(s2f(tc[6, 1]), 'arcsec'),
-        'moon_distance': Quantity(tc[7, 1], 'deg'),
+        'moon_distance': Quantity(s2f(tc[7, 1]), 'deg'),
     })
 
 
@@ -111,8 +111,8 @@ def weather(url=smartfacturl + 'weather.data'):
     tc = TableCrawler(url)
     return to_namedtuple('WeatherPage', {
         'timestamp': sft2dt(tc[0, 0]),
-        'sun': Quantity(tc[1, 1], '%'),
-        'moon': Quantity(tc[2, 1], '%'),
+        'sun': tc[1, 1],
+        'moon': tc[2, 1],
         'temperature': Quantity(s2f(tc[3, 1]), 'deg_C'),
         'dew_point': Quantity(s2f(tc[4, 1]), 'deg_C'),
         'humidity': Quantity(s2f(tc[5, 1]), '%'),
@@ -128,7 +128,7 @@ def sipm_currents(url=smartfacturl + 'current.data'):
     tc = TableCrawler(url)
     return to_namedtuple('CurrentPage', {
         'timestamp': sft2dt(tc[0, 0]),
-        'calibrated': tc[1, 1],
+        'calibrated': tc[1, 1] == 'yes',
         'min_per_sipm': Quantity(s2f(tc[2, 1]), 'uA'),
         'median_per_sipm': Quantity(s2f(tc[3, 1]), 'uA'),
         'mean_per_sipm': Quantity(s2f(tc[4, 1]), 'uA'),
@@ -150,6 +150,13 @@ def sipm_voltages(url=smartfacturl + 'voltage.data'):
 
 def status(url=smartfacturl + 'status.data'):
     tc = TableCrawler(url)
+
+    value, unit = tc[28, 1].split(' ')[:2]
+    storage_newdaq = Quantity(s2f(value), unit)
+
+    value, unit = tc[29, 1].split(' ')[:2]
+    storage_daq = Quantity(s2f(value), unit)
+
     return to_namedtuple('StatusPage', {
         'timestamp': sft2dt(tc[0, 0]),
         'dim': tc[1, 1],
@@ -179,8 +186,8 @@ def status(url=smartfacturl + 'status.data'):
         'temperature': tc[25, 1],
         'chat_server': tc[26, 1],
         'skype_client': tc[27, 1],
-        'free_space_newdaq': Quantity(s2f(tc[28, 1]), 'TB'),
-        'free_space_daq': Quantity(s2f(tc[29, 1]), 'TB'),
+        'free_space_newdaq': storage_newdaq,
+        'free_space_daq': storage_daq,
         'smartfact_runtime': tc[30, 1],
     })
 
