@@ -117,7 +117,7 @@ def weather(url=smartfacturl + 'weather.data'):
         'dew_point': Quantity(s2f(tc[4, 1]), 'deg_C'),
         'humidity': Quantity(s2f(tc[5, 1]), '%'),
         'pressure': Quantity(s2f(tc[6, 1]), 'hPa'),
-        'sind_speed': Quantity(s2f(tc[7, 1]), 'km/h'),
+        'wind_speed': Quantity(s2f(tc[7, 1]), 'km/h'),
         'wind_gusts': Quantity(s2f(tc[8, 1]), 'km/h'),
         'wind_direction': tc[9, 1],
         'dust_tng': Quantity(s2f(tc[10, 1]), 'ug/m3'),
