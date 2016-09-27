@@ -1,5 +1,6 @@
 import html
 import requests
+import urllib
 from datetime import datetime
 
 
@@ -26,13 +27,18 @@ def parse_table(text):
 
 
 def smartfact2table(url):
-    if url.startswith('http'):
+    parsed_url = urllib.parse.urlparse(url)
+
+    if parsed_url.scheme in ('http', 'https'):
         ret = requests.get(url, timeout=1)
         ret.raise_for_status()
         text = ret.text
 
-    else:
-        with open(url) as f:
+    elif parsed_url.scheme in ('', 'file'):
+        with open(parsed_url.path) as f:
             text = f.read()
+
+    else:
+        raise ValueError('Could not parse url: {}'.format(url))
 
     return parse_table(text)
