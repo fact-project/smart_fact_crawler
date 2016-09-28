@@ -49,7 +49,7 @@ def tracking(url=smartfacturl + 'tracking.data'):
     tc = TableCrawler(url)
     return to_namedtuple('TrackingPage', {
         'timestamp': sft2dt(tc[0, 0]),
-        'source_name': tc[1, 1],
+        'source_name': str.join(' ', tc[1, 1:]),
         'right_ascension': Quantity(s2f(tc[2, 1]), 'hourangle'),
         'declination': Quantity(s2f(tc[3, 1]), 'deg'),
         'zenith_distance': Quantity(s2f(tc[4, 1]), 'deg'),
@@ -206,7 +206,7 @@ def current_source(url=smartfacturl + 'source.data'):
     tc = TableCrawler(url)
     return to_namedtuple('SourcePage', {
         'timestamp': sft2dt(tc[0, 0]),
-        'name': tc[1, 1:],
+        'name': str.join(' ', tc[1, 1:]),
         'right_ascension': Quantity(s2f(tc[2, 1]), 'h'),
         'declination': Quantity(s2f(tc[3, 1]), 'deg'),
         'wobble_offset': Quantity(s2f(tc[4, 1]), 'deg'),
