@@ -48,7 +48,7 @@ def drive():
 
 def tracking(url=smartfacturl + 'tracking.data'):
     table = smartfact2table(url)
-    data = to_namedtuple('TrackingPage', {
+    return to_namedtuple('TrackingPage', {
         'timestamp': sft2dt(table[0][0]),
         'source_name': table[1][1],
         'right_ascension': Quantity(s2f(table[2][1]), 'hourangle'),
@@ -59,23 +59,21 @@ def tracking(url=smartfacturl + 'tracking.data'):
         'moon_distance': Quantity(s2f(table[7][1]), 'deg'),
     })
 
-    return data
 
 
 def pointing(url=smartfacturl + 'pointing.data'):
     table = smartfact2table(url)
-    data = to_namedtuple('PointingPage', {
+    return to_namedtuple('PointingPage', {
         'timestamp': sft2dt(table[0][0]),
         'azimuth': Quantity(s2f(table[1][1]), 'deg'),
         'zenith_distance': Quantity(s2f(table[2][1]), 'deg'),
     })
 
-    return data
 
 
 def sqm(url=smartfacturl + 'sqm.data'):
     table = smartfact2table(url)
-    data = to_namedtuple('SqmPage', {
+    return to_namedtuple('SqmPage', {
         'timestamp': sft2dt(table[0][0]),
         'magnitude': Quantity(s2f(table[1][1]), 'mag'),
         'sensor_frequency': Quantity(s2f(table[2][1]), 'Hz'),
@@ -83,7 +81,6 @@ def sqm(url=smartfacturl + 'sqm.data'):
         'sensor_temperature': Quantity(s2f(table[5][1]), 'deg_C'),
     })
 
-    return data
 
 
 def sun(url=smartfacturl + 'sun.data'):
@@ -101,7 +98,7 @@ def sun(url=smartfacturl + 'sun.data'):
     conv = next_datetime_from_hhmm_string
 
     table = smartfact2table(url)
-    data = to_namedtuple('SunPage', {
+    return to_namedtuple('SunPage', {
         'timestamp': sft2dt(table[0][0]),
         'end_of_dark_time': conv(table[1][1]),
         'end_of_astronomical_twilight': conv(table[2][1]),
@@ -113,12 +110,11 @@ def sun(url=smartfacturl + 'sun.data'):
         'start_of_dark_time': conv(table[8][1]),
     })
 
-    return data
 
 
 def weather(url=smartfacturl + 'weather.data'):
     table = smartfact2table(url)
-    data = to_namedtuple('WeatherPage', {
+    return to_namedtuple('WeatherPage', {
         'timestamp': sft2dt(table[0][0]),
         'sun': table[1][1],
         'moon': table[2][1],
@@ -132,12 +128,11 @@ def weather(url=smartfacturl + 'weather.data'):
         'dust_tng': Quantity(s2f(table[10][1]), 'ug/m3'),
     })
 
-    return data
 
 
 def sipm_currents(url=smartfacturl + 'current.data'):
     table = smartfact2table(url)
-    data = to_namedtuple('CurrentPage', {
+    return to_namedtuple('CurrentPage', {
         'timestamp': sft2dt(table[0][0]),
         'calibrated': table[1][1] == 'yes',
         'min_per_sipm': Quantity(s2f(table[2][1]), 'uA'),
@@ -147,12 +142,11 @@ def sipm_currents(url=smartfacturl + 'current.data'):
         'power': Quantity(s2f(table[6][1][:-1]), 'W'),
     })
 
-    return data
 
 
 def sipm_voltages(url=smartfacturl + 'voltage.data'):
     table = smartfact2table(url)
-    data =to_namedtuple('VoltagePage', {
+    return to_namedtuple('VoltagePage', {
         'timestamp': sft2dt(table[0][0]),
         'min': Quantity(s2f(table[1][1]), 'V'),
         'median': Quantity(s2f(table[2][1]), 'V'),
@@ -160,7 +154,6 @@ def sipm_voltages(url=smartfacturl + 'voltage.data'):
         'max': Quantity(s2f(table[4][1]), 'V'),
     })
 
-    return data
 
 
 def status(url=smartfacturl + 'status.data'):
@@ -172,7 +165,7 @@ def status(url=smartfacturl + 'status.data'):
     value, unit = table[29][1].split(' ')[:2]
     storage_daq = Quantity(s2f(value), unit)
 
-    data = to_namedtuple('StatusPage', {
+    return to_namedtuple('StatusPage', {
         'timestamp': sft2dt(table[0][0]),
         'dim': table[1][1],
         'dim_control': table[2][1],
@@ -206,24 +199,22 @@ def status(url=smartfacturl + 'status.data'):
         'smartfact_runtime': table[30][1],
     })
 
-    return data
 
 
 def container_temperature(url=smartfacturl + 'temperature.data'):
     table = smartfact2table(url)
-    data =to_namedtuple('ContainerTemperaturePage', {
+    return to_namedtuple('ContainerTemperaturePage', {
         'timestamp': sft2dt(table[0][0]),
         'daily_min': Quantity(table[1][1], 'deg_C'),
         'current': Quantity(table[2][1], 'deg_C'),
         'daily_max': Quantity(table[3][1], 'deg_C'),
     })
 
-    return data
 
 
 def current_source(url=smartfacturl + 'source.data'):
     table = smartfact2table(url)
-    data = to_namedtuple('SourcePage', {
+    return to_namedtuple('SourcePage', {
         'timestamp': sft2dt(table[0][0]),
         'name': table[1][1],
         'right_ascension': Quantity(s2f(table[2][1]), 'h'),
@@ -232,12 +223,11 @@ def current_source(url=smartfacturl + 'source.data'):
         'wobble_angle': Quantity(s2f(table[5][1]), 'deg'),
     })
 
-    return data
 
 
 def camera_climate(url=smartfacturl + 'fsc.data'):
     table = smartfact2table(url)
-    data = to_namedtuple('CameraClimatePage', {
+    return to_namedtuple('CameraClimatePage', {
         'timestamp': sft2dt(table[0][0]),
         'humidity_mean': Quantity(s2f(table[1][1]), '%'),
         'relative_temperature_max': Quantity(s2f(table[2][1]), 'deg_C'),
@@ -245,12 +235,11 @@ def camera_climate(url=smartfacturl + 'fsc.data'):
         'relative_temperature_min': Quantity(s2f(table[4][1]), 'deg_C'),
     })
 
-    return data
 
 
 def main_page(url=smartfacturl + 'fact.data'):
     table = smartfact2table(url)
-    data =to_namedtuple('MainPage', {
+    return to_namedtuple('MainPage', {
         'timestamp_1': sft2dt(table[0][0]),
         'timestamp_2': sft2dt(table[0][1]),
         'system_status': table[1][1],
@@ -259,25 +248,22 @@ def main_page(url=smartfacturl + 'fact.data'):
         'wind_speed': Quantity(s2f(table[4][2]), 'km/h'),
     })
 
-    return data
 
 
 def trigger_rate(url=smartfacturl + 'trigger.data'):
     table = smartfact2table(url)
-    data = to_namedtuple('TriggerPage', {
+    return to_namedtuple('TriggerPage', {
         'timestamp': sft2dt(table[0][0]),
         'trigger_rate': Quantity(s2f(table[1][1]), '1/s'),
     })
 
-    return data
 
 
 def errorhist(url=smartfacturl + 'errorhist.data'):
     table = smartfact2table(url)
     history = [h for h in table[1][1].split("<->")[1].split("<br/>") if h]
-    data = to_namedtuple('ErrorHistPage', {
+    return to_namedtuple('ErrorHistPage', {
         'timestamp': sft2dt(table[0][0]),
         'history': history,
     })
 
-    return data
