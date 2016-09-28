@@ -45,4 +45,5 @@ class TableCrawler(object):
                 break
             except IndexError:
                 self._acknowledge_error_and_wait_a_moment()
+                self._load_payload()
         return item
