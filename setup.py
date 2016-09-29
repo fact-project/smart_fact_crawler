@@ -12,6 +12,11 @@ setup(
     packages=[
         'smart_fact_crawler',
     ],
+   package_data={'smart_fact_crawler': [
+                'resources/20160703_233149/*.data',
+                'resources/20160703_233149_broken_fsc/fsc.data',
+                ]
+    },
     install_requires=[
         'requests',
     ],
