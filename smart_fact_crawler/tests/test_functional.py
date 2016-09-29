@@ -57,3 +57,13 @@ def test_broken_page():
 
     with raises(IndexError):
         sfc.camera_climate()
+
+def test_source_name():
+    sfc.smartfacturl = 'file:' + path.join(
+        path.dirname(sfc.__file__),
+        'resources',
+        '20160703_233149',
+        )
+
+    assert sfc.current_source().name == 'Mrk 501'
+    assert sfc.drive_tracking().source_name == 'Mrk 501'
