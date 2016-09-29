@@ -47,3 +47,13 @@ def test_timestamp_dates():
             if 'timestamp' in row_name:
                 assert row.date() == test_date
 
+from pytest import raises
+def test_broken_page():
+    sfc.smartfacturl = 'file:' + path.join(
+        path.dirname(sfc.__file__),
+        'resources',
+        '20160703_233149_broken_fsc',
+        )
+
+    with raises(IndexError):
+        sfc.camera_climate()
