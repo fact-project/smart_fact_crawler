@@ -14,7 +14,6 @@ setup(
     ],
     install_requires=[
         'requests',
-        'python-dateutil',
     ],
     zip_safe=True,
 )
