@@ -41,10 +41,9 @@ def smartfact():
     )
 
 
-def drive_tracking(base_url=None):
-    if not base_url:
-        base_url = smartfacturl
-    url = os.path.join(base_url, 'tracking.data')
+def drive_tracking(url=None):
+    if url is None:
+        url = os.path.join(smartfacturl, 'tracking.data')
     table = smartfact2table(url)
     return to_namedtuple('TrackingPage', {
         'timestamp': sft2dt(table[0][0]),
@@ -59,10 +58,9 @@ def drive_tracking(base_url=None):
 
 
 
-def drive_pointing(base_url=None):
-    if not base_url:
-        base_url = smartfacturl
-    url = os.path.join(base_url, 'pointing.data')
+def drive_pointing(url=None):
+    if url is None:
+        url = os.path.join(smartfacturl, 'pointing.data')
     table = smartfact2table(url)
     return to_namedtuple('PointingPage', {
         'timestamp': sft2dt(table[0][0]),
@@ -72,10 +70,9 @@ def drive_pointing(base_url=None):
 
 
 
-def sqm(base_url=None):
-    if not base_url:
-        base_url = smartfacturl
-    url = os.path.join(base_url, 'sqm.data')
+def sqm(url=None):
+    if url is None:
+        url = os.path.join(smartfacturl, 'sqm.data')
     table = smartfact2table(url)
     return to_namedtuple('SqmPage', {
         'timestamp': sft2dt(table[0][0]),
@@ -87,10 +84,9 @@ def sqm(base_url=None):
 
 
 
-def sun(base_url=None):
-    if not base_url:
-        base_url = smartfacturl
-    url = os.path.join(base_url, 'sun.data')
+def sun(url=None):
+    if url is None:
+        url = os.path.join(smartfacturl, 'sun.data')
 
     def next_datetime_from_hhmm_string(hhmm):
         now = datetime.utcnow()
@@ -119,10 +115,9 @@ def sun(base_url=None):
 
 
 
-def weather(base_url=None):
-    if not base_url:
-        base_url = smartfacturl
-    url = os.path.join(base_url, 'weather.data')
+def weather(url=None):
+    if url is None:
+        url = os.path.join(smartfacturl, 'weather.data')
     table = smartfact2table(url)
     return to_namedtuple('WeatherPage', {
         'timestamp': sft2dt(table[0][0]),
@@ -140,10 +135,9 @@ def weather(base_url=None):
 
 
 
-def sipm_currents(base_url=None):
-    if not base_url:
-        base_url = smartfacturl
-    url = os.path.join(base_url, 'current.data')
+def sipm_currents(url=None):
+    if url is None:
+        url = os.path.join(smartfacturl, 'current.data')
     table = smartfact2table(url)
     return to_namedtuple('CurrentPage', {
         'timestamp': sft2dt(table[0][0]),
@@ -157,10 +151,9 @@ def sipm_currents(base_url=None):
 
 
 
-def sipm_voltages(base_url=None):
-    if not base_url:
-        base_url = smartfacturl
-    url = os.path.join(base_url, 'voltage.data')
+def sipm_voltages(url=None):
+    if url is None:
+        url = os.path.join(smartfacturl, 'voltage.data')
     table = smartfact2table(url)
     return to_namedtuple('VoltagePage', {
         'timestamp': sft2dt(table[0][0]),
@@ -172,10 +165,9 @@ def sipm_voltages(base_url=None):
 
 
 
-def status(base_url=None):
-    if not base_url:
-        base_url = smartfacturl
-    url = os.path.join(base_url, 'status.data')
+def status(url=None):
+    if url is None:
+        url = os.path.join(smartfacturl, 'status.data')
     table = smartfact2table(url)
 
     value, unit = table[28][1].split(' ')[:2]
@@ -220,10 +212,9 @@ def status(base_url=None):
 
 
 
-def container_temperature(base_url=None):
-    if not base_url:
-        base_url = smartfacturl
-    url = os.path.join(base_url, 'temperature.data')
+def container_temperature(url=None):
+    if url is None:
+        url = os.path.join(smartfacturl, 'temperature.data')
     table = smartfact2table(url)
     return to_namedtuple('ContainerTemperaturePage', {
         'timestamp': sft2dt(table[0][0]),
@@ -234,10 +225,9 @@ def container_temperature(base_url=None):
 
 
 
-def current_source(base_url=None):
-    if not base_url:
-        base_url = smartfacturl
-    url = os.path.join(base_url, 'source.data')
+def current_source(url=None):
+    if url is None:
+        url = os.path.join(smartfacturl, 'source.data')
     table = smartfact2table(url)
     return to_namedtuple('SourcePage', {
         'timestamp': sft2dt(table[0][0]),
@@ -250,10 +240,9 @@ def current_source(base_url=None):
 
 
 
-def camera_climate(base_url=None):
-    if not base_url:
-        base_url = smartfacturl
-    url = os.path.join(base_url, 'fsc.data')
+def camera_climate(url=None):
+    if url is None:
+        url = os.path.join(smartfacturl, 'fsc.data')
     table = smartfact2table(url)
     return to_namedtuple('CameraClimatePage', {
         'timestamp': sft2dt(table[0][0]),
@@ -265,10 +254,9 @@ def camera_climate(base_url=None):
 
 
 
-def main_page(base_url=None):
-    if not base_url:
-        base_url = smartfacturl
-    url = os.path.join(base_url, 'fact.data')
+def main_page(url=None):
+    if url is None:
+        url = os.path.join(smartfacturl, 'fact.data')
     table = smartfact2table(url)
     return to_namedtuple('MainPage', {
         'timestamp_1': sft2dt(table[0][0]),
@@ -281,10 +269,9 @@ def main_page(base_url=None):
 
 
 
-def trigger_rate(base_url=None):
-    if not base_url:
-        base_url = smartfacturl
-    url = os.path.join(base_url, 'trigger.data')
+def trigger_rate(url=None):
+    if url is None:
+        url = os.path.join(smartfacturl, 'trigger.data')
     table = smartfact2table(url)
     return to_namedtuple('TriggerPage', {
         'timestamp': sft2dt(table[0][0]),
@@ -293,10 +280,9 @@ def trigger_rate(base_url=None):
 
 
 
-def errorhist(base_url=None):
-    if not base_url:
-        base_url = smartfacturl
-    url = os.path.join(base_url, 'errorhist.data')
+def errorhist(url=None):
+    if url is None:
+        url = os.path.join(smartfacturl, 'errorhist.data')
     table = smartfact2table(url)
     history = [h for h in table[1][1].split("<->")[1].split("<br/>") if h]
     return to_namedtuple('ErrorHistPage', {
