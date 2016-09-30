@@ -3,7 +3,7 @@ from distutils.core import setup
 
 setup(
     name='smart_fact_crawler',
-    version='0.2.0',
+    version='0.2.1',
     description='acquieres data published on the smartfact web page',
     url='https://github.com/fact-project/smart_fact_crawler.git',
     author='Dominik Neise, Sebastian Mueller, Maximilian Nöthe',
@@ -12,9 +12,13 @@ setup(
     packages=[
         'smart_fact_crawler',
     ],
+   package_data={'smart_fact_crawler': [
+                'resources/20160703_233149/*.data',
+                'resources/20160703_233149_broken_fsc/fsc.data',
+                ]
+    },
     install_requires=[
         'requests',
-        'python-dateutil',
     ],
     zip_safe=True,
 )
