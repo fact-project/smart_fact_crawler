@@ -1,4 +1,4 @@
-from distutils.core import setup
+from setuptools import setup
 
 
 setup(
@@ -12,7 +12,7 @@ setup(
     packages=[
         'smart_fact_crawler',
     ],
-   package_data={'smart_fact_crawler': [
+    package_data={'smart_fact_crawler': [
                 'resources/20160703_233149/*.data',
                 'resources/20160703_233149_broken_fsc/fsc.data',
                 ]
@@ -20,5 +20,7 @@ setup(
     install_requires=[
         'requests',
     ],
+    tests_require=['pytest>=3.0'],
+    setup_requires=['pytest-runner'],
     zip_safe=True,
 )
