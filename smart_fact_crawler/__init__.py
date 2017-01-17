@@ -258,13 +258,22 @@ def main_page(url=None):
     if url is None:
         url = os.path.join(smartfacturl, 'fact.data')
     table = smartfact2table(url)
+
+    try:
+        humidity = Quantity(s2f(table[4][1]), '%')
+        wind_speed = Quantity(s2f(table[4][2]), 'km/h')
+    except IndexError:
+        humidity = Quantity(float('nan'), '%')
+        wind_speed = Quantity(float('nan'), 'km/h')
+
+
     return to_namedtuple('MainPage', {
         'timestamp_1': sft2dt(table[0][0]),
         'timestamp_2': sft2dt(table[0][1]),
         'system_status': table[1][1],
         'relative_camera_temperature': Quantity(s2f(table[3][1]), 'deg_C'),
-        'humidity': Quantity(s2f(table[4][1]), '%'),
-        'wind_speed': Quantity(s2f(table[4][2]), 'km/h'),
+        'humidity': humidity,
+        'wind_speed': wind_speed,
     })
 
 

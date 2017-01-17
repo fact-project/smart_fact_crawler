@@ -1,9 +1,9 @@
-from distutils.core import setup
+from setuptools import setup
 
 
 setup(
     name='smart_fact_crawler',
-    version='0.2.1',
+    version='0.2.2',
     description='acquieres data published on the smartfact web page',
     url='https://github.com/fact-project/smart_fact_crawler.git',
     author='Dominik Neise, Sebastian Mueller, Maximilian Nöthe',
@@ -12,13 +12,16 @@ setup(
     packages=[
         'smart_fact_crawler',
     ],
-   package_data={'smart_fact_crawler': [
-                'resources/20160703_233149/*.data',
-                'resources/20160703_233149_broken_fsc/fsc.data',
-                ]
+    package_data={
+        'smart_fact_crawler': [
+            'resources/20160703_233149/*.data',
+            'resources/20160703_233149_broken_fsc/fsc.data',
+         ]
     },
     install_requires=[
         'requests',
     ],
+    tests_require=['pytest>=3.0'],
+    setup_requires=['pytest-runner'],
     zip_safe=True,
 )
