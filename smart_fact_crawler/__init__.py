@@ -18,7 +18,7 @@ def to_namedtuple(name, dictionary):
     return namedtuple(name, dictionary.keys())(**dictionary)
 
 
-def smartfact():
+def smartfact(timeout=None):
     functions = [
         status,
         drive_tracking,
@@ -37,14 +37,14 @@ def smartfact():
     ]
     return to_namedtuple(
         'SmartFact',
-        {f.__name__: f() for f in functions}
+        {f.__name__: f(timeout=timeout) for f in functions}
     )
 
 
-def drive_tracking(url=None):
+def drive_tracking(url=None, timeout=None):
     if url is None:
         url = os.path.join(smartfacturl, 'tracking.data')
-    table = smartfact2table(url)
+    table = smartfact2table(url, timeout=timeout)
     return to_namedtuple('TrackingPage', {
         'timestamp': sft2dt(table[0][0]),
         'source_name': table[1][1],
@@ -58,10 +58,10 @@ def drive_tracking(url=None):
 
 
 
-def drive_pointing(url=None):
+def drive_pointing(url=None, timeout=None):
     if url is None:
         url = os.path.join(smartfacturl, 'pointing.data')
-    table = smartfact2table(url)
+    table = smartfact2table(url, timeout=timeout)
     return to_namedtuple('PointingPage', {
         'timestamp': sft2dt(table[0][0]),
         'azimuth': Quantity(s2f(table[1][1]), 'deg'),
@@ -70,10 +70,10 @@ def drive_pointing(url=None):
 
 
 
-def sqm(url=None):
+def sqm(url=None, timeout=None):
     if url is None:
         url = os.path.join(smartfacturl, 'sqm.data')
-    table = smartfact2table(url)
+    table = smartfact2table(url, timeout=timeout)
     return to_namedtuple('SqmPage', {
         'timestamp': sft2dt(table[0][0]),
         'magnitude': Quantity(s2f(table[1][1]), 'mag'),
@@ -84,7 +84,7 @@ def sqm(url=None):
 
 
 
-def sun(url=None):
+def sun(url=None, timeout=None):
     if url is None:
         url = os.path.join(smartfacturl, 'sun.data')
 
@@ -100,7 +100,7 @@ def sun(url=None):
 
     conv = next_datetime_from_hhmm_string
 
-    table = smartfact2table(url)
+    table = smartfact2table(url, timeout=timeout)
     return to_namedtuple('SunPage', {
         'timestamp': sft2dt(table[0][0]),
         'end_of_dark_time': conv(table[1][1]),
@@ -115,10 +115,10 @@ def sun(url=None):
 
 
 
-def weather(url=None):
+def weather(url=None, timeout=None):
     if url is None:
         url = os.path.join(smartfacturl, 'weather.data')
-    table = smartfact2table(url)
+    table = smartfact2table(url, timeout=timeout)
     return to_namedtuple('WeatherPage', {
         'timestamp': sft2dt(table[0][0]),
         'sun': table[1][1],
@@ -135,10 +135,10 @@ def weather(url=None):
 
 
 
-def sipm_currents(url=None):
+def sipm_currents(url=None, timeout=None):
     if url is None:
         url = os.path.join(smartfacturl, 'current.data')
-    table = smartfact2table(url)
+    table = smartfact2table(url, timeout=timeout)
     return to_namedtuple('CurrentPage', {
         'timestamp': sft2dt(table[0][0]),
         'calibrated': table[1][1] == 'yes',
@@ -151,10 +151,10 @@ def sipm_currents(url=None):
 
 
 
-def sipm_voltages(url=None):
+def sipm_voltages(url=None, timeout=None):
     if url is None:
         url = os.path.join(smartfacturl, 'voltage.data')
-    table = smartfact2table(url)
+    table = smartfact2table(url, timeout=timeout)
     return to_namedtuple('VoltagePage', {
         'timestamp': sft2dt(table[0][0]),
         'min': Quantity(s2f(table[1][1]), 'V'),
@@ -165,10 +165,10 @@ def sipm_voltages(url=None):
 
 
 
-def status(url=None):
+def status(url=None, timeout=None):
     if url is None:
         url = os.path.join(smartfacturl, 'status.data')
-    table = smartfact2table(url)
+    table = smartfact2table(url, timeout=timeout)
 
     value, unit = table[28][1].split(' ')[:2]
     storage_newdaq = Quantity(s2f(value), unit)
@@ -212,10 +212,10 @@ def status(url=None):
 
 
 
-def container_temperature(url=None):
+def container_temperature(url=None, timeout=None):
     if url is None:
         url = os.path.join(smartfacturl, 'temperature.data')
-    table = smartfact2table(url)
+    table = smartfact2table(url, timeout=timeout)
     return to_namedtuple('ContainerTemperaturePage', {
         'timestamp': sft2dt(table[0][0]),
         'daily_min': Quantity(table[1][1], 'deg_C'),
@@ -225,10 +225,10 @@ def container_temperature(url=None):
 
 
 
-def current_source(url=None):
+def current_source(url=None, timeout=None):
     if url is None:
         url = os.path.join(smartfacturl, 'source.data')
-    table = smartfact2table(url)
+    table = smartfact2table(url, timeout=timeout)
     return to_namedtuple('SourcePage', {
         'timestamp': sft2dt(table[0][0]),
         'name': table[1][1],
@@ -240,10 +240,10 @@ def current_source(url=None):
 
 
 
-def camera_climate(url=None):
+def camera_climate(url=None, timeout=None):
     if url is None:
         url = os.path.join(smartfacturl, 'fsc.data')
-    table = smartfact2table(url)
+    table = smartfact2table(url, timeout=timeout)
     return to_namedtuple('CameraClimatePage', {
         'timestamp': sft2dt(table[0][0]),
         'humidity_mean': Quantity(s2f(table[1][1]), '%'),
@@ -254,10 +254,10 @@ def camera_climate(url=None):
 
 
 
-def main_page(url=None):
+def main_page(url=None, timeout=None):
     if url is None:
         url = os.path.join(smartfacturl, 'fact.data')
-    table = smartfact2table(url)
+    table = smartfact2table(url, timeout=timeout)
 
     try:
         humidity = Quantity(s2f(table[4][1]), '%')
@@ -278,21 +278,20 @@ def main_page(url=None):
 
 
 
-def trigger_rate(url=None):
+def trigger_rate(url=None, timeout=None):
     if url is None:
         url = os.path.join(smartfacturl, 'trigger.data')
-    table = smartfact2table(url)
+    table = smartfact2table(url, timeout=timeout)
     return to_namedtuple('TriggerPage', {
         'timestamp': sft2dt(table[0][0]),
         'trigger_rate': Quantity(s2f(table[1][1]), '1/s'),
     })
 
 
-
-def errorhist(url=None):
+def errorhist(url=None, timeout=None):
     if url is None:
         url = os.path.join(smartfacturl, 'errorhist.data')
-    table = smartfact2table(url)
+    table = smartfact2table(url, timeout=timeout)
     history = [h for h in table[1][1].split("<->")[1].split("<br/>") if h]
     return to_namedtuple('ErrorHistPage', {
         'timestamp': sft2dt(table[0][0]),
