@@ -26,11 +26,11 @@ def parse_table(text):
     ]
 
 
-def smartfact2table(url):
+def smartfact2table(url, timeout=None):
     parsed_url = urllib.parse.urlparse(url)
 
     if parsed_url.scheme in ('http', 'https'):
-        ret = requests.get(url, timeout=1)
+        ret = requests.get(url, timeout=timeout)
         ret.raise_for_status()
         text = ret.text
 
