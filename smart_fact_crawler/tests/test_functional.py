@@ -69,7 +69,7 @@ def test_source_name():
     assert sfc.drive_tracking().source_name == 'Mrk 501'
 
 
-def test_main_page():
+def test_main_page_with_run_id():
     sfc.smartfacturl = 'file:' + path.join(
         path.dirname(sfc.__file__),
         'resources',
@@ -80,7 +80,7 @@ def test_main_page():
     assert sfc.main_page().run_id == '47'
 
 
-def test_main_page():
+def test_main_page_no_run_id():
     sfc.smartfacturl = 'file:' + path.join(
         path.dirname(sfc.__file__),
         'resources',
