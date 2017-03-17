@@ -16,6 +16,7 @@ setup(
         'smart_fact_crawler': [
             'resources/20160703_233149/*.data',
             'resources/20160703_233149_broken_fsc/fsc.data',
+            'resources/main_page_no_run_id/fact.data',
          ]
     },
     install_requires=[
