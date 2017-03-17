@@ -67,3 +67,13 @@ def test_source_name():
 
     assert sfc.current_source().name == 'Mrk 501'
     assert sfc.drive_tracking().source_name == 'Mrk 501'
+
+def test_main_page():
+    sfc.smartfacturl = 'file:' + path.join(
+        path.dirname(sfc.__file__),
+        'resources',
+        '20160703_233149',
+        )
+
+    assert sfc.main_page().system_status == 'data(47) [1169/279s]'
+    assert sfc.main_page().run_id == '47'
