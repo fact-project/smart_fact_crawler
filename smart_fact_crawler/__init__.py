@@ -57,7 +57,6 @@ def drive_tracking(url=None):
     })
 
 
-
 def drive_pointing(url=None):
     if url is None:
         url = os.path.join(smartfacturl, 'pointing.data')
@@ -67,7 +66,6 @@ def drive_pointing(url=None):
         'azimuth': Quantity(s2f(table[1][1]), 'deg'),
         'zenith_distance': Quantity(s2f(table[2][1]), 'deg'),
     })
-
 
 
 def sqm(url=None):
@@ -81,7 +79,6 @@ def sqm(url=None):
         'sensor_period': Quantity(s2f(table[4][1]), 's'),
         'sensor_temperature': Quantity(s2f(table[5][1]), 'deg_C'),
     })
-
 
 
 def sun(url=None):
@@ -114,7 +111,6 @@ def sun(url=None):
     })
 
 
-
 def weather(url=None):
     if url is None:
         url = os.path.join(smartfacturl, 'weather.data')
@@ -134,7 +130,6 @@ def weather(url=None):
     })
 
 
-
 def sipm_currents(url=None):
     if url is None:
         url = os.path.join(smartfacturl, 'current.data')
@@ -150,7 +145,6 @@ def sipm_currents(url=None):
     })
 
 
-
 def sipm_voltages(url=None):
     if url is None:
         url = os.path.join(smartfacturl, 'voltage.data')
@@ -162,7 +156,6 @@ def sipm_voltages(url=None):
         'mean': Quantity(s2f(table[3][1]), 'V'),
         'max': Quantity(s2f(table[4][1]), 'V'),
     })
-
 
 
 def status(url=None):
@@ -211,7 +204,6 @@ def status(url=None):
     })
 
 
-
 def container_temperature(url=None):
     if url is None:
         url = os.path.join(smartfacturl, 'temperature.data')
@@ -222,7 +214,6 @@ def container_temperature(url=None):
         'current': Quantity(table[2][1], 'deg_C'),
         'daily_max': Quantity(table[3][1], 'deg_C'),
     })
-
 
 
 def current_source(url=None):
@@ -239,7 +230,6 @@ def current_source(url=None):
     })
 
 
-
 def camera_climate(url=None):
     if url is None:
         url = os.path.join(smartfacturl, 'fsc.data')
@@ -251,7 +241,6 @@ def camera_climate(url=None):
         'relative_temperature_mean': Quantity(s2f(table[3][1]), 'deg_C'),
         'relative_temperature_min': Quantity(s2f(table[4][1]), 'deg_C'),
     })
-
 
 
 def main_page(url=None):
@@ -268,7 +257,6 @@ def main_page(url=None):
     })
 
 
-
 def trigger_rate(url=None):
     if url is None:
         url = os.path.join(smartfacturl, 'trigger.data')
@@ -277,7 +265,6 @@ def trigger_rate(url=None):
         'timestamp': sft2dt(table[0][0]),
         'trigger_rate': Quantity(s2f(table[1][1]), '1/s'),
     })
-
 
 
 def errorhist(url=None):
@@ -289,4 +276,3 @@ def errorhist(url=None):
         'timestamp': sft2dt(table[0][0]),
         'history': history,
     })
-
