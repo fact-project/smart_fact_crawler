@@ -79,3 +79,13 @@ def test_main_page():
     assert sfc.main_page().system_status == 'data(47) [1169/279s]'
     assert sfc.main_page().run_id == '47'
 
+
+def test_main_page():
+    sfc.smartfacturl = 'file:' + path.join(
+        path.dirname(sfc.__file__),
+        'resources',
+        'main_page_no_run_id',
+        )
+
+    assert sfc.main_page().system_status == 'Idle [pedestal]'
+    assert sfc.main_page().run_id == ''
