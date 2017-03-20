@@ -61,3 +61,19 @@ def extract_run_id_from_system_status(system_status):
     else:
         run_id = int(match_run_id.groups()[0])
     return run_id
+
+
+def get_table_entry(table, row, col, fallback=False, default=None):
+    '''
+    Get an element from a two dimensinoal list like the return value
+    of smartfact2table, if fallback is True, default is returned for
+    a non-existing element
+    '''
+
+    try:
+        return table[row][col]
+    except IndexError:
+        if fallback is True:
+            return default
+        else:
+            raise
