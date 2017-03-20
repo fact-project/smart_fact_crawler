@@ -19,10 +19,9 @@ def test_extract_run_id_from_system_status_without_run_id():
 def test_extract_run_id_from_system_status_with_list():
     with pytest.raises(TypeError):
         a_list_by_accident = list('data(47) [1169/279s]')
-        result = tools_to_test.extract_run_id_from_system_status(
-            a_list_by_accident)
+        tools_to_test.extract_run_id_from_system_status(a_list_by_accident)
 
 
 def test_extract_run_id_from_system_status_with_None():
     with pytest.raises(TypeError):
-        result = tools_to_test.extract_run_id_from_system_status(None)
+        tools_to_test.extract_run_id_from_system_status(None)
