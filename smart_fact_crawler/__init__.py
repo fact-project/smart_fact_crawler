@@ -51,10 +51,9 @@ def drive_tracking(url=None, timeout=None, fallback=False):
 
     table = smartfact2table(url, timeout=timeout)
     get = partial(get_entry, fallback=fallback)
-    timestamp = get(table, 0, 0)
 
     return to_namedtuple('TrackingPage', {
-        'timestamp': sft2dt(timestamp) if timestamp else None,
+        'timestamp': sft2dt(get(table, 0, 0)),
         'source_name': get(table, 1, 1),
         'right_ascension': Quantity(s2f(get(table, 2, 1)), 'hourangle'),
         'declination': Quantity(s2f(get(table, 3, 1)), 'deg'),
@@ -71,10 +70,9 @@ def drive_pointing(url=None, timeout=None, fallback=False):
 
     table = smartfact2table(url, timeout=timeout)
     get = partial(get_entry, fallback=fallback)
-    timestamp = get(table, 0, 0)
 
     return to_namedtuple('PointingPage', {
-        'timestamp': sft2dt(timestamp) if timestamp else None,
+        'timestamp': sft2dt(get(table, 0, 0)),
         'azimuth': Quantity(s2f(get(table, 1, 1)), 'deg'),
         'zenith_distance': Quantity(s2f(get(table, 2, 1)), 'deg'),
     })
@@ -86,10 +84,9 @@ def sqm(url=None, timeout=None, fallback=False):
 
     table = smartfact2table(url, timeout=timeout)
     get = partial(get_entry, fallback=fallback)
-    timestamp = get(table, 0, 0)
 
     return to_namedtuple('SqmPage', {
-        'timestamp': sft2dt(timestamp) if timestamp else None,
+        'timestamp': sft2dt(get(table, 0, 0)),
         'magnitude': Quantity(s2f(get(table, 1, 1)), 'mag'),
         'sensor_frequency': Quantity(s2f(get(table, 2, 1)), 'Hz'),
         'sensor_period': Quantity(s2f(get(table, 4, 1)), 's'),
@@ -119,10 +116,9 @@ def sun(url=None, timeout=None, fallback=False):
 
     table = smartfact2table(url, timeout=timeout)
     get = partial(get_entry, fallback=fallback)
-    timestamp = get(table, 0, 0)
 
     return to_namedtuple('SunPage', {
-        'timestamp': sft2dt(timestamp) if timestamp else None,
+        'timestamp': sft2dt(get(table, 0, 0)),
         'end_of_dark_time': conv(get(table, 1, 1)),
         'end_of_astronomical_twilight': conv(get(table, 2, 1)),
         'end_of_nautical_twilight': conv(get(table, 3, 1)),
@@ -140,10 +136,9 @@ def weather(url=None, timeout=None, fallback=False):
 
     table = smartfact2table(url, timeout=timeout)
     get = partial(get_entry, fallback=fallback)
-    timestamp = get(table, 0, 0)
 
     return to_namedtuple('WeatherPage', {
-        'timestamp': sft2dt(timestamp) if timestamp else None,
+        'timestamp': sft2dt(get(table, 0, 0)),
         'sun': get(table, 1, 1),
         'moon': get(table, 2, 1),
         'temperature': Quantity(s2f(get(table, 3, 1)), 'deg_C'),
@@ -163,11 +158,10 @@ def sipm_currents(url=None, timeout=None, fallback=False):
 
     table = smartfact2table(url, timeout=timeout)
     get = partial(get_entry, fallback=fallback)
-    timestamp = get(table, 0, 0)
     calibrated = get(table, 1, 1)
 
     return to_namedtuple('CurrentPage', {
-        'timestamp': sft2dt(timestamp) if timestamp else None,
+        'timestamp': sft2dt(get(table, 0, 0)),
         'calibrated':  calibrated == 'yes' if calibrated is not None else None,
         'min_per_sipm': Quantity(s2f(get(table, 2, 1)), 'uA'),
         'median_per_sipm': Quantity(s2f(get(table, 3, 1)), 'uA'),
@@ -183,10 +177,9 @@ def sipm_voltages(url=None, timeout=None, fallback=False):
 
     table = smartfact2table(url, timeout=timeout)
     get = partial(get_entry, fallback=fallback)
-    timestamp = get(table, 0, 0)
 
     return to_namedtuple('VoltagePage', {
-        'timestamp': sft2dt(timestamp) if timestamp else None,
+        'timestamp': sft2dt(get(table, 0, 0)),
         'min': Quantity(s2f(get(table, 1, 1)), 'V'),
         'median': Quantity(s2f(get(table, 2, 1)), 'V'),
         'mean': Quantity(s2f(get(table, 3, 1)), 'V'),
@@ -200,7 +193,6 @@ def status(url=None, timeout=None, fallback=False):
 
     table = smartfact2table(url, timeout=timeout)
     get = partial(get_entry, fallback=fallback)
-    timestamp = get(table, 0, 0)
 
     value, unit = get(table, 28, 1, default='nan nan').split(' ')[:2]
     storage_newdaq = Quantity(s2f(value), unit)
@@ -209,7 +201,7 @@ def status(url=None, timeout=None, fallback=False):
     storage_daq = Quantity(s2f(value), unit)
 
     return to_namedtuple('StatusPage', {
-        'timestamp': sft2dt(timestamp) if timestamp else None,
+        'timestamp': sft2dt(get(table, 0, 0)),
         'dim': get(table, 1, 1),
         'dim_control': get(table, 2, 1),
         'mcp': get(table, 3, 1),
@@ -249,10 +241,9 @@ def container_temperature(url=None, timeout=None, fallback=False):
 
     table = smartfact2table(url, timeout=timeout)
     get = partial(get_entry, fallback=fallback)
-    timestamp = get(table, 0, 0)
 
     return to_namedtuple('ContainerTemperaturePage', {
-        'timestamp': sft2dt(timestamp) if timestamp else None,
+        'timestamp': sft2dt(get(table, 0, 0)),
         'daily_min': Quantity(get(table, 1, 1), 'deg_C'),
         'current': Quantity(get(table, 2, 1), 'deg_C'),
         'daily_max': Quantity(get(table, 3, 1), 'deg_C'),
@@ -265,10 +256,9 @@ def current_source(url=None, timeout=None, fallback=False):
 
     table = smartfact2table(url, timeout=timeout)
     get = partial(get_entry, fallback=fallback)
-    timestamp = get(table, 0, 0)
 
     return to_namedtuple('SourcePage', {
-        'timestamp': sft2dt(timestamp) if timestamp else None,
+        'timestamp': sft2dt(get(table, 0, 0)),
         'name': get(table, 1, 1),
         'right_ascension': Quantity(s2f(get(table, 2, 1)), 'h'),
         'declination': Quantity(s2f(get(table, 3, 1)), 'deg'),
@@ -283,10 +273,9 @@ def camera_climate(url=None, timeout=None, fallback=False):
 
     table = smartfact2table(url, timeout=timeout)
     get = partial(get_entry, fallback=fallback)
-    timestamp = get(table, 0, 0)
 
     return to_namedtuple('CameraClimatePage', {
-        'timestamp': sft2dt(timestamp) if timestamp else None,
+        'timestamp': sft2dt(get(table, 0, 0)),
         'humidity_mean': Quantity(s2f(get(table, 1, 1)), '%'),
         'relative_temperature_max': Quantity(s2f(get(table, 2, 1)), 'deg_C'),
         'relative_temperature_mean': Quantity(s2f(get(table, 3, 1)), 'deg_C'),
@@ -301,13 +290,10 @@ def main_page(url=None, timeout=None, fallback=False):
     table = smartfact2table(url, timeout=timeout)
     get = partial(get_entry, fallback=fallback)
 
-    timestamp1 = get(table, 0, 0)
-    timestamp2 = get(table, 0, 1)
-
     system_status = get(table, 1, 1)
     return to_namedtuple('MainPage', {
-        'timestamp_1': sft2dt(timestamp1) if timestamp1 else None,
-        'timestamp_2': sft2dt(timestamp2) if timestamp2 else None,
+        'timestamp_1': sft2dt(get(table, 0, 0)),
+        'timestamp_2': sft2dt(get(table, 0, 1)),
         'system_status': system_status,
         'run_id': extract_run_id_from_system_status(system_status),
         'relative_camera_temperature': Quantity(s2f(get(table, 3, 1)), 'deg_C'),
@@ -322,10 +308,9 @@ def trigger_rate(url=None, timeout=None, fallback=False):
 
     table = smartfact2table(url, timeout=timeout)
     get = partial(get_entry, fallback=fallback)
-    timestamp = get(table, 0, 0)
 
     return to_namedtuple('TriggerPage', {
-        'timestamp': sft2dt(timestamp) if timestamp else None,
+        'timestamp': sft2dt(get(table, 0, 0)),
         'trigger_rate': Quantity(s2f(get(table, 1, 1)), '1/s'),
     })
 
