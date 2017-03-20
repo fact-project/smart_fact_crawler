@@ -1,17 +1,20 @@
 from os import path
 import smart_fact_crawler as sfc
 from datetime import datetime
+from pytest import raises
 
 
 def test_is_install_folder_a_directory():
     dir_ = path.dirname(sfc.__file__)
     assert path.isdir(dir_)
 
+
 def test_can_find_resource_folder():
     dir_ = path.join(
         path.dirname(sfc.__file__),
         'resources')
     assert path.isdir(dir_)
+
 
 def test_can_find_a_testfilefolder():
     dir_ = path.join(
@@ -21,6 +24,7 @@ def test_can_find_a_testfilefolder():
         )
     assert path.isdir(dir_)
 
+
 def test_smartfact():
     sfc.smartfacturl = 'file:' + path.join(
         path.dirname(sfc.__file__),
@@ -29,6 +33,7 @@ def test_smartfact():
         )
 
     sfc.smartfact()
+
 
 def test_timestamp_dates():
     sfc.smartfacturl = 'file:' + path.join(
@@ -47,7 +52,7 @@ def test_timestamp_dates():
             if 'timestamp' in row_name:
                 assert row.date() == test_date
 
-from pytest import raises
+
 def test_broken_page():
     sfc.smartfacturl = 'file:' + path.join(
         path.dirname(sfc.__file__),
@@ -57,6 +62,17 @@ def test_broken_page():
 
     with raises(IndexError):
         sfc.camera_climate()
+
+
+def test_broken_page_fallback():
+    sfc.smartfacturl = 'file:' + path.join(
+        path.dirname(sfc.__file__),
+        'resources',
+        '20160703_233149_broken_fsc',
+        )
+
+    sfc.camera_climate(fallback=True)
+
 
 def test_source_name():
     sfc.smartfacturl = 'file:' + path.join(
