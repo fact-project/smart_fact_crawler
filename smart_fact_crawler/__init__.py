@@ -6,9 +6,10 @@ from datetime import timedelta
 from .tools import str2float as s2f
 from .tools import smartfact_time2datetime as sft2dt
 from .tools import smartfact2table
+from .tools import extract_run_id_from_system_status
 
 from collections import namedtuple
-import re
+
 
 smartfacturl = "http://fact-project.org/smartfact/data/"
 
@@ -256,16 +257,15 @@ def main_page(url=None, timeout=None):
         humidity = Quantity(float('nan'), '%')
         wind_speed = Quantity(float('nan'), 'km/h')
 
-    run_id_in_system_status_pattern = r'.*\((\d*)\).*'
-    match_run_id = re.match(run_id_in_system_status_pattern, table[1][1])
+    system_status = table[1][1]
     return to_namedtuple('MainPage', {
         'timestamp_1': sft2dt(table[0][0]),
         'timestamp_2': sft2dt(table[0][1]),
-        'system_status': table[1][1],
+        'system_status': system_status,
+        'run_id': extract_run_id_from_system_status(system_status),
         'relative_camera_temperature': Quantity(s2f(table[3][1]), 'deg_C'),
         'humidity': humidity,
         'wind_speed': wind_speed,
-        'run_id': match_run_id.groups()[0] if match_run_id is not None else '',
     })
 
 
