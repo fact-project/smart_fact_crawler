@@ -8,7 +8,7 @@ import re
 def str2float(text):
     try:
         number = float(text)
-    except ValueError:
+    except (ValueError, TypeError):
         number = float("nan")
 
     return number
