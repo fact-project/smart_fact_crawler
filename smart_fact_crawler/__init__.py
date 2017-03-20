@@ -6,8 +6,10 @@ from datetime import timedelta
 from .tools import str2float as s2f
 from .tools import smartfact_time2datetime as sft2dt
 from .tools import smartfact2table
+from .tools import extract_run_id_from_system_status
 
 from collections import namedtuple
+
 
 smartfacturl = "http://fact-project.org/smartfact/data/"
 
@@ -57,7 +59,6 @@ def drive_tracking(url=None, timeout=None):
     })
 
 
-
 def drive_pointing(url=None, timeout=None):
     if url is None:
         url = os.path.join(smartfacturl, 'pointing.data')
@@ -67,7 +68,6 @@ def drive_pointing(url=None, timeout=None):
         'azimuth': Quantity(s2f(table[1][1]), 'deg'),
         'zenith_distance': Quantity(s2f(table[2][1]), 'deg'),
     })
-
 
 
 def sqm(url=None, timeout=None):
@@ -81,7 +81,6 @@ def sqm(url=None, timeout=None):
         'sensor_period': Quantity(s2f(table[4][1]), 's'),
         'sensor_temperature': Quantity(s2f(table[5][1]), 'deg_C'),
     })
-
 
 
 def sun(url=None, timeout=None):
@@ -114,7 +113,6 @@ def sun(url=None, timeout=None):
     })
 
 
-
 def weather(url=None, timeout=None):
     if url is None:
         url = os.path.join(smartfacturl, 'weather.data')
@@ -134,7 +132,6 @@ def weather(url=None, timeout=None):
     })
 
 
-
 def sipm_currents(url=None, timeout=None):
     if url is None:
         url = os.path.join(smartfacturl, 'current.data')
@@ -150,7 +147,6 @@ def sipm_currents(url=None, timeout=None):
     })
 
 
-
 def sipm_voltages(url=None, timeout=None):
     if url is None:
         url = os.path.join(smartfacturl, 'voltage.data')
@@ -162,7 +158,6 @@ def sipm_voltages(url=None, timeout=None):
         'mean': Quantity(s2f(table[3][1]), 'V'),
         'max': Quantity(s2f(table[4][1]), 'V'),
     })
-
 
 
 def status(url=None, timeout=None):
@@ -211,7 +206,6 @@ def status(url=None, timeout=None):
     })
 
 
-
 def container_temperature(url=None, timeout=None):
     if url is None:
         url = os.path.join(smartfacturl, 'temperature.data')
@@ -222,7 +216,6 @@ def container_temperature(url=None, timeout=None):
         'current': Quantity(table[2][1], 'deg_C'),
         'daily_max': Quantity(table[3][1], 'deg_C'),
     })
-
 
 
 def current_source(url=None, timeout=None):
@@ -239,7 +232,6 @@ def current_source(url=None, timeout=None):
     })
 
 
-
 def camera_climate(url=None, timeout=None):
     if url is None:
         url = os.path.join(smartfacturl, 'fsc.data')
@@ -251,7 +243,6 @@ def camera_climate(url=None, timeout=None):
         'relative_temperature_mean': Quantity(s2f(table[3][1]), 'deg_C'),
         'relative_temperature_min': Quantity(s2f(table[4][1]), 'deg_C'),
     })
-
 
 
 def main_page(url=None, timeout=None):
@@ -266,16 +257,16 @@ def main_page(url=None, timeout=None):
         humidity = Quantity(float('nan'), '%')
         wind_speed = Quantity(float('nan'), 'km/h')
 
-
+    system_status = table[1][1]
     return to_namedtuple('MainPage', {
         'timestamp_1': sft2dt(table[0][0]),
         'timestamp_2': sft2dt(table[0][1]),
-        'system_status': table[1][1],
+        'system_status': system_status,
+        'run_id': extract_run_id_from_system_status(system_status),
         'relative_camera_temperature': Quantity(s2f(table[3][1]), 'deg_C'),
         'humidity': humidity,
         'wind_speed': wind_speed,
     })
-
 
 
 def trigger_rate(url=None, timeout=None):
@@ -297,4 +288,3 @@ def errorhist(url=None, timeout=None):
         'timestamp': sft2dt(table[0][0]),
         'history': history,
     })
-
