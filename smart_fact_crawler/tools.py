@@ -4,10 +4,11 @@ import urllib
 from datetime import datetime
 import re
 
+
 def str2float(text):
     try:
         number = float(text)
-    except:
+    except ValueError:
         number = float("nan")
 
     return number
