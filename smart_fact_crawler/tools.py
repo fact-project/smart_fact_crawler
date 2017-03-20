@@ -63,7 +63,7 @@ def extract_run_id_from_system_status(system_status):
     return run_id
 
 
-def get_table_entry(table, row, col, fallback=False, default=None):
+def get_entry(table, row, col, fallback=False, default=None):
     '''
     Get an element from a two dimensinoal list like the return value
     of smartfact2table, if fallback is True, default is returned for
