@@ -23,5 +23,4 @@ def test_extract_run_id_from_system_status_with_list():
 
 
 def test_extract_run_id_from_system_status_with_None():
-    with pytest.raises(TypeError):
-        tools_to_test.extract_run_id_from_system_status(None)
+    assert tools_to_test.extract_run_id_from_system_status(None) is None
