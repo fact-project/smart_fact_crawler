@@ -9,6 +9,8 @@ from .tools import smartfact2table
 from .tools import extract_run_id_from_system_status
 from .tools import get_entry
 
+import re
+
 from collections import namedtuple
 from functools import partial
 
@@ -160,6 +162,17 @@ def sipm_currents(url=None, timeout=None, fallback=False):
     get = partial(get_entry, fallback=fallback)
     calibrated = get(table, 1, 1)
 
+    power_str = get(table, 6, 1, default='')
+    # we expect something like 5W [4mW]
+    match = re.match('(\d+)([a-zA-Z]+)\s*\[(\d+)([a-zA-Z]+)\]', power_str)
+    if match is not None:
+        cam_value, cam_unit, gapd_value, gapd_unit = match.groups()
+        power_camera = Quantity(s2f(cam_value), cam_unit)
+        power_gapd = Quantity(s2f(gapd_value), gapd_unit)
+    else:
+        power_camera = Quantity(float('nan'), 'W')
+        power_gapd = Quantity(float('nan'), 'W')
+
     return to_namedtuple('CurrentPage', {
         'timestamp': sft2dt(get(table, 0, 0)),
         'calibrated':  calibrated == 'yes' if calibrated is not None else None,
@@ -167,7 +180,8 @@ def sipm_currents(url=None, timeout=None, fallback=False):
         'median_per_sipm': Quantity(s2f(get(table, 3, 1)), 'uA'),
         'mean_per_sipm': Quantity(s2f(get(table, 4, 1)), 'uA'),
         'max_per_sipm': Quantity(s2f(get(table, 5, 1)), 'uA'),
-        'power': Quantity(s2f(get(table, 6, 1, default='')[:-1]), 'W'),
+        'power_camera': power_camera,
+        'power_gapd': power_gapd,
     })
 
 
