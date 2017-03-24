@@ -20,6 +20,17 @@ smartfacturl = "http://fact-project.org/smartfact/data/"
 Quantity = namedtuple('Quantity', ['value', 'unit'])
 
 
+run_re = re.compile(
+    '([0-9]{2}:[0-9]{2}:[0-9]{2}) '  # match the time part
+    '<#[a-z]+>'                      # html color
+    '([a-zA-Z\-]+) '                 # run type
+    '\[([a-zA-Z0-9 ]+)\] '           # source name
+    '\(Run (\d+)\)'                  # run number
+    '</#>'
+)
+Run = namedtuple('Run', ['start', 'type', 'source', 'id'])
+
+
 def to_namedtuple(name, dictionary):
     return namedtuple(name, dictionary.keys())(**dictionary)
 
@@ -335,7 +346,6 @@ def errorhist(url=None, timeout=None, fallback=False):
 
     table = smartfact2table(url, timeout=timeout)
     get = partial(get_entry, fallback=fallback)
-    timestamp = get(table, 0, 0)
 
     history = [
         h
@@ -343,6 +353,34 @@ def errorhist(url=None, timeout=None, fallback=False):
         if h
     ]
     return to_namedtuple('ErrorHistPage', {
-        'timestamp': sft2dt(timestamp) if timestamp else None,
+        'timestamp': sft2dt(get(table, 0, 0)),
         'history': history,
+    })
+
+
+def build_run(tup):
+    start, run_type, source, run_id = tup
+    run_id = int(run_id)
+
+    now = datetime.utcnow()
+    start = datetime.strptime(start, '%H:%M:%S').replace(
+        year=now.year, month=now.month, day=now.day
+    )
+
+    return Run(start, run_type, source, run_id)
+
+
+def observations(url=None, timeout=None, fallback=False):
+    if url is None:
+        url = os.path.join(smartfacturl, 'observations.data')
+
+    table = smartfact2table(url, timeout=timeout)
+    get = partial(get_entry, fallback=fallback)
+
+    runs = list(map(build_run, run_re.findall(table[1][1])))
+    runs.sort(key=lambda r: r.id)
+
+    return to_namedtuple('ErrorHistPage', {
+        'timestamp': sft2dt(get(table, 0, 0)),
+        'runs': runs,
     })
