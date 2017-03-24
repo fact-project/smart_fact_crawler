@@ -6,7 +6,6 @@ from datetime import timedelta
 from .tools import str2float as s2f
 from .tools import smartfact_time2datetime as sft2dt
 from .tools import smartfact2table
-from .tools import extract_run_id_from_system_status
 from .tools import get_entry
 
 import re
@@ -322,7 +321,6 @@ def main_page(url=None, timeout=None, fallback=False):
         'timestamp_1': sft2dt(get(table, 0, 0)),
         'timestamp_2': sft2dt(get(table, 0, 1)),
         'system_status': system_status,
-        'run_id': extract_run_id_from_system_status(system_status),
         'relative_camera_temperature': Quantity(s2f(get(table, 3, 1)), 'deg_C'),
         'humidity': Quantity(s2f(get(table, 4, 1)), '%'),
         'wind_speed': Quantity(s2f(get(table, 4, 2)), 'km/h'),
