@@ -4,16 +4,20 @@ import urllib
 from datetime import datetime
 import re
 
+
 def str2float(text):
     try:
         number = float(text)
-    except:
+    except (ValueError, TypeError):
         number = float("nan")
 
     return number
 
 
 def smartfact_time2datetime(fact_timestamp):
+    if fact_timestamp is None:
+        return None
+
     return datetime.utcfromtimestamp(
         str2float(fact_timestamp) / 1000.0
     )
@@ -53,10 +57,29 @@ def extract_run_id_from_system_status(system_status):
     throws TypeError in case `system_status` is not string like
     enough to be used inside re.match()
     '''
+    if system_status is None:
+        return None
+
     run_id_in_system_status_pattern = r'.*\((\d+)\).*'
     match_run_id = re.match(run_id_in_system_status_pattern, system_status)
+
     if match_run_id is None:
-        run_id = None
-    else:
-        run_id = int(match_run_id.groups()[0])
-    return run_id
+        return None
+
+    return int(match_run_id.groups()[0])
+
+
+def get_entry(table, row, col, fallback=False, default=None):
+    '''
+    Get an element from a two dimensinoal list like the return value
+    of smartfact2table, if fallback is True, default is returned for
+    a non-existing element
+    '''
+
+    try:
+        return table[row][col]
+    except IndexError:
+        if fallback is True:
+            return default
+        else:
+            raise
