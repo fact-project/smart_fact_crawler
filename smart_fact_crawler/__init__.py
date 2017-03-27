@@ -384,8 +384,12 @@ def observations(url=None, timeout=None, fallback=False):
     table = smartfact2table(url, timeout=timeout)
     get = partial(get_entry, fallback=fallback)
 
-    runs = list(map(build_run, run_re.findall(table[1][1])))
-    runs.sort(key=lambda r: r.id)
+    run_list = get(table, 1, 1)
+    if run_list is not None:
+        runs = list(map(build_run, run_re.findall(table[1][1])))
+        runs.sort(key=lambda r: r.id)
+    else:
+        runs = None
 
     return to_namedtuple('ErrorHistPage', {
         'timestamp': sft2dt(get(table, 0, 0)),
