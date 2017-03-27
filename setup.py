@@ -21,7 +21,7 @@ setup(
     install_requires=[
         'requests',
     ],
-    tests_require=['pytest>=3.0'],
+    tests_require=['pytest>=3.0', 'freezegun'],
     setup_requires=['pytest-runner'],
     zip_safe=True,
 )
