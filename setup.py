@@ -3,7 +3,7 @@ from setuptools import setup
 
 setup(
     name='smart_fact_crawler',
-    version='0.4.0',
+    version='0.4.1',
     description='acquieres data published on the smartfact web page',
     url='https://github.com/fact-project/smart_fact_crawler.git',
     author='Dominik Neise, Sebastian Mueller, Maximilian Nöthe',
@@ -21,7 +21,7 @@ setup(
     install_requires=[
         'requests',
     ],
-    tests_require=['pytest>=3.0'],
+    tests_require=['pytest>=3.0', 'freezegun'],
     setup_requires=['pytest-runner'],
     zip_safe=True,
 )

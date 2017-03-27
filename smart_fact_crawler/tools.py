@@ -2,7 +2,6 @@ import html
 import requests
 import urllib
 from datetime import datetime
-import re
 
 
 def str2float(text):
@@ -46,27 +45,6 @@ def smartfact2table(url, timeout=None):
         raise ValueError('Could not parse url: {}'.format(url))
 
     return parse_table(text)
-
-
-def extract_run_id_from_system_status(system_status):
-    '''
-    system_status: string like 'data(47) [1169/279s]' or 'Idle [pedestal]'
-    returns: integer `run_id`
-        or None if no number between braces `()` found in system_status.
-
-    throws TypeError in case `system_status` is not string like
-    enough to be used inside re.match()
-    '''
-    if system_status is None:
-        return None
-
-    run_id_in_system_status_pattern = r'.*\((\d+)\).*'
-    match_run_id = re.match(run_id_in_system_status_pattern, system_status)
-
-    if match_run_id is None:
-        return None
-
-    return int(match_run_id.groups()[0])
 
 
 def get_entry(table, row, col, fallback=False, default=None):

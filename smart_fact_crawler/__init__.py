@@ -6,7 +6,6 @@ from datetime import timedelta
 from .tools import str2float as s2f
 from .tools import smartfact_time2datetime as sft2dt
 from .tools import smartfact2table
-from .tools import extract_run_id_from_system_status
 from .tools import get_entry
 
 import re
@@ -18,6 +17,17 @@ from functools import partial
 smartfacturl = "http://fact-project.org/smartfact/data/"
 
 Quantity = namedtuple('Quantity', ['value', 'unit'])
+
+
+run_re = re.compile(
+    '([0-9]{2}:[0-9]{2}:[0-9]{2}) '  # match the time part
+    '<#[a-z]+>'                      # html color
+    '([a-zA-Z\-]+) '                 # run type
+    '\[([a-zA-Z0-9 ]+)\] '           # source name
+    '\(Run (\d+)\)'                  # run number
+    '</#>'
+)
+Run = namedtuple('Run', ['start', 'type', 'source', 'id'])
 
 
 def to_namedtuple(name, dictionary):
@@ -305,14 +315,19 @@ def main_page(url=None, timeout=None, fallback=False):
     get = partial(get_entry, fallback=fallback)
 
     system_status = get(table, 1, 1)
+    power_val, power_unit = get(table, 6, 3, default='nan nan').split()
+    trigger_val, trigger_unit, _ = get(table, 5, 1, default='nan nan nan').split()
     return to_namedtuple('MainPage', {
         'timestamp_1': sft2dt(get(table, 0, 0)),
         'timestamp_2': sft2dt(get(table, 0, 1)),
         'system_status': system_status,
-        'run_id': extract_run_id_from_system_status(system_status),
         'relative_camera_temperature': Quantity(s2f(get(table, 3, 1)), 'deg_C'),
         'humidity': Quantity(s2f(get(table, 4, 1)), '%'),
         'wind_speed': Quantity(s2f(get(table, 4, 2)), 'km/h'),
+        'trigger_rate': Quantity(s2f(trigger_val), trigger_unit),
+        'median_current': Quantity(s2f(get(table, 6, 1)), 'uA'),
+        'max_current': Quantity(s2f(get(table, 6, 2)), 'uA'),
+        'power': Quantity(s2f(power_val), power_unit),
     })
 
 
@@ -335,7 +350,6 @@ def errorhist(url=None, timeout=None, fallback=False):
 
     table = smartfact2table(url, timeout=timeout)
     get = partial(get_entry, fallback=fallback)
-    timestamp = get(table, 0, 0)
 
     history = [
         h
@@ -343,6 +357,41 @@ def errorhist(url=None, timeout=None, fallback=False):
         if h
     ]
     return to_namedtuple('ErrorHistPage', {
-        'timestamp': sft2dt(timestamp) if timestamp else None,
+        'timestamp': sft2dt(get(table, 0, 0)),
         'history': history,
+    })
+
+
+def build_run(tup):
+    start, run_type, source, run_id = tup
+    run_id = int(run_id)
+
+    now = datetime.utcnow()
+    start = datetime.strptime(start, '%H:%M:%S').replace(
+        year=now.year, month=now.month, day=now.day
+    )
+
+    if start > now:
+        start -= timedelta(hours=24)
+
+    return Run(start, run_type, source, run_id)
+
+
+def observations(url=None, timeout=None, fallback=False):
+    if url is None:
+        url = os.path.join(smartfacturl, 'observations.data')
+
+    table = smartfact2table(url, timeout=timeout)
+    get = partial(get_entry, fallback=fallback)
+
+    run_list = get(table, 1, 1)
+    if run_list is not None:
+        runs = list(map(build_run, run_re.findall(table[1][1])))
+        runs.sort(key=lambda r: r.id)
+    else:
+        runs = None
+
+    return to_namedtuple('ErrorHistPage', {
+        'timestamp': sft2dt(get(table, 0, 0)),
+        'runs': runs,
     })
