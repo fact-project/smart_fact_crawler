@@ -371,6 +371,9 @@ def build_run(tup):
         year=now.year, month=now.month, day=now.day
     )
 
+    if start > now:
+        start -= timedelta(hours=24)
+
     return Run(start, run_type, source, run_id)
 
 
