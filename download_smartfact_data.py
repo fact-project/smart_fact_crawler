@@ -44,7 +44,9 @@ def download_all():
     logging.info('Start downloading all')
     now = datetime.utcnow()
 
-    output_directory = '{}/{:02d}/{:02d}'.format(now.year, now.month, now.day)
+    output_directory = '{}/{:02d}/{:02d}/{:%H%M}'.format(
+        now.year, now.month, now.day, now
+    )
     os.makedirs(output_directory, exist_ok=True)
 
     with ThreadPoolExecutor(max_workers=7) as executor:
@@ -53,7 +55,7 @@ def download_all():
                 download,
                 url.format(filename),
                 os.path.join(
-                    output_directory, '{}_{:%H%M}.data'.format(filename, now)
+                    output_directory, '{}.data'.format(filename, now)
                 )
             )
 
