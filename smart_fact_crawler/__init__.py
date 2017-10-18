@@ -239,7 +239,7 @@ def status(url=None, timeout=None, fallback=False):
         'rate_control': get(table, 11, 1),
         'fsc_control': get(table, 12, 1),
         'pfmini_control': get(table, 13, 1),
-        'bias_temp': get(table(14, 1)),
+        'bias_temp': get(table, 14, 1),
         'gps_control': get(table, 15, 1),
         'sqm_control': get(table, 16, 1),
         'agilent_control_24v': get(table, 17, 1),
