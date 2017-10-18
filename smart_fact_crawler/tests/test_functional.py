@@ -12,7 +12,8 @@ def test_is_install_folder_a_directory():
 def test_can_find_resource_folder():
     dir_ = path.join(
         path.dirname(sfc.__file__),
-        'resources')
+        'resources'
+    )
     assert path.isdir(dir_)
 
 
@@ -21,7 +22,7 @@ def test_can_find_a_testfilefolder():
         path.dirname(sfc.__file__),
         'resources',
         '20160703_233149',
-        )
+    )
     assert path.isdir(dir_)
 
 
@@ -30,7 +31,7 @@ def test_smartfact():
         path.dirname(sfc.__file__),
         'resources',
         '20160703_233149',
-        )
+    )
 
     sfc.smartfact()
 
@@ -40,7 +41,7 @@ def test_timestamp_dates():
         path.dirname(sfc.__file__),
         'resources',
         '20160703_233149',
-        )
+    )
     test_date = datetime(2016, 7, 3).date()
 
     complete = sfc.smartfact()
@@ -58,7 +59,7 @@ def test_broken_page():
         path.dirname(sfc.__file__),
         'resources',
         '20160703_233149_broken_fsc',
-        )
+    )
 
     with raises(IndexError):
         sfc.camera_climate()
@@ -69,7 +70,7 @@ def test_broken_page_fallback():
         path.dirname(sfc.__file__),
         'resources',
         '20160703_233149_broken_fsc',
-        )
+    )
 
     sfc.camera_climate(fallback=True)
 
@@ -79,7 +80,7 @@ def test_source_name():
         path.dirname(sfc.__file__),
         'resources',
         '20160703_233149',
-        )
+    )
 
     assert sfc.current_source().name == 'Mrk 501'
     assert sfc.drive_tracking().source_name == 'Mrk 501'
