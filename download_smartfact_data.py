@@ -91,8 +91,8 @@ def download(url, outputfile):
 
         with open(outputfile, 'w') as f:
             f.write(ret.text)
-    except requests.ConnectionError:
-        logging.error('Could not download {}'.format(url))
+    except requests.exceptions.RequestException as e:
+        logging.exception('Could not download {}'.format(url))
 
 
 def make_output_dir():
