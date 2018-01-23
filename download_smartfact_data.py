@@ -94,14 +94,20 @@ def download(url, outputfile):
         logging.error('Could not download {}'.format(url))
 
 
-def download_all():
-    logging.info('Start downloading all')
+def make_output_dir():
     now = datetime.utcnow()
 
     output_directory = '{}/{:02d}/{:02d}/{:%H%M}'.format(
         now.year, now.month, now.day, now
     )
     os.makedirs(output_directory, exist_ok=True)
+
+    return output_directory
+
+
+def download_all():
+    logging.info('Start downloading all')
+    output_directory = make_output_dir()
 
     with ThreadPoolExecutor(max_workers=len(files)) as executor:
         for filename in files:
