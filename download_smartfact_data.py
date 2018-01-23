@@ -109,7 +109,7 @@ def download_all():
                 download,
                 url.format(filename),
                 os.path.join(
-                    output_directory, '{}.data'.format(filename, now)
+                    output_directory, '{}.data'.format(filename)
                 )
             )
 
