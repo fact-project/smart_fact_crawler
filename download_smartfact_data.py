@@ -5,6 +5,7 @@ from datetime import datetime
 from concurrent.futures import ThreadPoolExecutor
 import logging
 from time import sleep
+from functools import partial
 
 logging.basicConfig(level=logging.INFO)
 
@@ -105,18 +106,23 @@ def make_output_dir():
     return output_directory
 
 
+def make_out_path(output_directory, filename):
+    os.path.join(
+        output_directory, '{}.data'.format(filename)
+    )
+
+
 def download_all():
     logging.info('Start downloading all')
     output_directory = make_output_dir()
+    out_path = partial(make_out_path, output_directory)
 
     with ThreadPoolExecutor(max_workers=len(files)) as executor:
         for filename in files:
             executor.submit(
                 download,
                 url.format(filename),
-                os.path.join(
-                    output_directory, '{}.data'.format(filename)
-                )
+                out_path(filename)
             )
 
 
