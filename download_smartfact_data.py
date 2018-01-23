@@ -126,6 +126,17 @@ def download_all():
             )
 
 
+def download_all_without_executor():
+    logging.info('Start download_all_without_executor')
+    output_directory = make_output_dir()
+    out_path = partial(make_out_path, output_directory)
+
+    for filename in files:
+        download(
+            url.format(filename),
+            out_path(filename)
+        )
+
 if __name__ == '__main__':
     download_all()
 
