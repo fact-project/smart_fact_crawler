@@ -138,9 +138,7 @@ def download_all_without_executor():
         )
 
 if __name__ == '__main__':
-    download_all()
-
-    schedule.every(5).minutes.do(download_all)
     while True:
-        schedule.run_pending()
-        sleep(10)
+        download_all_without_executor()
+        sleep(5 * 60)
+
