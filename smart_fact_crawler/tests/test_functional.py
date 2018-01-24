@@ -59,6 +59,18 @@ def test_broken_page():
         'resources',
         '20160703_233149_broken_fsc',
         )
+    sfc.smartfacturl = 'file:' + test_file_dir
+
+    with raises(IndexError):
+        sfc.camera_climate()
+
+
+def test_text_in_exception():
+    test_file_dir = path.join(
+        path.dirname(sfc.__file__),
+        'resources',
+        '20160703_233149_broken_fsc',
+        )
     test_file_content = open(
         path.join(test_file_dir, 'fsc.data')
         ).read()
