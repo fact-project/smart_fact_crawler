@@ -23,10 +23,7 @@ def smartfact_time2datetime(fact_timestamp):
 
 
 def parse_table(text):
-    return [
-        line.split('\t')
-        for line in html.unescape(text).splitlines()
-    ]
+    return [line.split('\t') for line in text.splitlines()]
 
 
 def smartfact2table(url, timeout=None):
@@ -43,8 +40,8 @@ def smartfact2table(url, timeout=None):
 
     else:
         raise ValueError('Could not parse url: {}'.format(url))
-
-    return parse_table(text)
+    text = html.unescape(text)
+    return parse_table(text), text
 
 
 def get_entry(table, row, col, fallback=False, default=None):
