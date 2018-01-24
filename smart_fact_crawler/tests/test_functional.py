@@ -54,23 +54,14 @@ def test_timestamp_dates():
 
 
 def test_broken_page():
-    test_file_dir = path.join(
+    sfc.smartfacturl = 'file:' + path.join(
         path.dirname(sfc.__file__),
         'resources',
         '20160703_233149_broken_fsc',
         )
-    test_file_content = open(
-        path.join(test_file_dir, 'fsc.data')
-        ).read()
-    sfc.smartfacturl = 'file:' + test_file_dir
 
-    with raises(IndexError) as excinfo:
+    with raises(IndexError):
         sfc.camera_climate()
-
-    message = excinfo.value.args[0]
-    print(message)
-    assert "text:" in message
-    assert test_file_content in message
 
 
 def test_broken_page_fallback():
