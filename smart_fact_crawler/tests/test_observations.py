@@ -6,13 +6,14 @@ test_file = resource_filename(
     'smart_fact_crawler', 'resources/20160703_233149/observations.data'
 )
 
+
 def test_re():
     from smart_fact_crawler import run_re
 
     with open(test_file) as f:
         m = run_re.findall(f.read())
 
-    assert len(m) ==  67
+    assert len(m) == 67
 
     timestamp, run_type, source, run_id = m[0]
 
