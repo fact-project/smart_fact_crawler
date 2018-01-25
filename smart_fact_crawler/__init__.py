@@ -315,8 +315,6 @@ def main_page(url=None, timeout=None, fallback=False):
     get = partial(get_entry, fallback=fallback)
 
     system_status = get(table, 1, 1)
-    power_val, power_unit = get(table, 6, 3, default='nan nan').split()
-    trigger_val, trigger_unit, _ = get(table, 5, 1, default='nan nan nan').split()
     return to_namedtuple('MainPage', {
         'timestamp_1': sft2dt(get(table, 0, 0)),
         'timestamp_2': sft2dt(get(table, 0, 1)),
@@ -324,10 +322,6 @@ def main_page(url=None, timeout=None, fallback=False):
         'relative_camera_temperature': Quantity(s2f(get(table, 3, 1)), 'deg_C'),
         'humidity': Quantity(s2f(get(table, 4, 1)), '%'),
         'wind_speed': Quantity(s2f(get(table, 4, 2)), 'km/h'),
-        'trigger_rate': Quantity(s2f(trigger_val), trigger_unit),
-        'median_current': Quantity(s2f(get(table, 6, 1)), 'uA'),
-        'max_current': Quantity(s2f(get(table, 6, 2)), 'uA'),
-        'power': Quantity(s2f(power_val), power_unit),
     })
 
 
