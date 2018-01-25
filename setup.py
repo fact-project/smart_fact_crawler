@@ -4,7 +4,7 @@ from setuptools import setup
 setup(
     name='smart_fact_crawler',
     version='0.4.1',
-    description='acquieres data published on the smartfact web page',
+    description='acquire data published on the smartfact web page',
     url='https://github.com/fact-project/smart_fact_crawler.git',
     author='Dominik Neise, Sebastian Mueller, Maximilian Nöthe',
     author_email='sebmuell@phys.ethz.ch',
