@@ -218,10 +218,10 @@ def status(url=None, timeout=None, fallback=False):
     table = smartfact2table(url, timeout=timeout)
     get = partial(get_entry, fallback=fallback)
 
-    value, unit = get(table, 28, 1, default='nan nan').split(' ')[:2]
+    value, unit = get(table, 29, 1, default='nan nan').split(' ')[:2]
     storage_newdaq = Quantity(s2f(value), unit)
 
-    value, unit = get(table, 29, 1, default='nan nan').split(' ')[:2]
+    value, unit = get(table, 30, 1, default='nan nan').split(' ')[:2]
     storage_daq = Quantity(s2f(value), unit)
 
     return to_namedtuple('StatusPage', {
@@ -239,23 +239,24 @@ def status(url=None, timeout=None, fallback=False):
         'rate_control': get(table, 11, 1),
         'fsc_control': get(table, 12, 1),
         'pfmini_control': get(table, 13, 1),
-        'gps_control': get(table, 14, 1),
-        'sqm_control': get(table, 15, 1),
-        'agilent_control_24v': get(table, 16, 1),
-        'agilent_control_50v': get(table, 17, 1),
-        'agilent_control_80v': get(table, 18, 1),
-        'power_control': get(table, 19, 1),
-        'lid_control': get(table, 20, 1),
-        'ratescan': get(table, 21, 1),
-        'magic_weather': get(table, 22, 1),
-        'tng_weather': get(table, 23, 1),
-        'magic_lidar': get(table, 24, 1),
-        'temperature': get(table, 25, 1),
-        'chat_server': get(table, 26, 1),
-        'skype_client': get(table, 27, 1),
+        'bias_temp': get(table, 14, 1),
+        'gps_control': get(table, 15, 1),
+        'sqm_control': get(table, 16, 1),
+        'agilent_control_24v': get(table, 17, 1),
+        'agilent_control_50v': get(table, 18, 1),
+        'agilent_control_80v': get(table, 19, 1),
+        'power_control': get(table, 20, 1),
+        'lid_control': get(table, 21, 1),
+        'ratescan': get(table, 22, 1),
+        'magic_weather': get(table, 23, 1),
+        'tng_weather': get(table, 24, 1),
+        'magic_lidar': get(table, 25, 1),
+        'temperature': get(table, 26, 1),
+        'chat_server': get(table, 27, 1),
+        'skype_client': get(table, 28, 1),
         'free_space_newdaq': storage_newdaq,
         'free_space_daq': storage_daq,
-        'smartfact_runtime': get(table, 30, 1),
+        'smartfact_runtime': get(table, 31, 1),
     })
 
 

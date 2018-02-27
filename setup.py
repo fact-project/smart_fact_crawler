@@ -3,7 +3,7 @@ from setuptools import setup
 
 setup(
     name='smart_fact_crawler',
-    version='0.4.2',
+    version='0.5.0',
     description='acquire data published on the smartfact web page',
     url='https://github.com/fact-project/smart_fact_crawler.git',
     author='Dominik Neise, Sebastian Mueller, Maximilian Nöthe',
@@ -16,7 +16,7 @@ setup(
         'smart_fact_crawler': [
             'resources/20160703_233149/*.data',
             'resources/20160703_233149_broken_fsc/fsc.data',
-         ]
+        ]
     },
     install_requires=[
         'requests',
