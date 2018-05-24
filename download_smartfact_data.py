@@ -5,11 +5,12 @@ from datetime import datetime
 from concurrent.futures import ThreadPoolExecutor
 import logging
 from time import sleep
+from functools import partial
 
 logging.basicConfig(level=logging.INFO)
 
 
-url = 'http://fact-project.org/smartfact/data/{}.data'
+url = 'http://fact-project.org/smartfact/data/{}'
 files = [
     'agilent24.data',
     'agilent50.data',
@@ -90,12 +91,11 @@ def download(url, outputfile):
 
         with open(outputfile, 'w') as f:
             f.write(ret.text)
-    except requests.ConnectionError:
-        logging.error('Could not download {}'.format(url))
+    except requests.exceptions.RequestException as e:
+        logging.exception('Could not download {}'.format(url))
 
 
-def download_all():
-    logging.info('Start downloading all')
+def make_output_dir():
     now = datetime.utcnow()
 
     output_directory = '{}/{:02d}/{:02d}/{:%H%M}'.format(
@@ -103,14 +103,24 @@ def download_all():
     )
     os.makedirs(output_directory, exist_ok=True)
 
+    return output_directory
+
+
+def make_out_path(output_directory, filename):
+    return os.path.join(output_directory, filename)
+
+
+def download_all():
+    logging.info('Start downloading all')
+    output_directory = make_output_dir()
+    out_path = partial(make_out_path, output_directory)
+
     with ThreadPoolExecutor(max_workers=len(files)) as executor:
         for filename in files:
             executor.submit(
                 download,
                 url.format(filename),
-                os.path.join(
-                    output_directory, '{}.data'.format(filename, now)
-                )
+                out_path(filename)
             )
 
 
