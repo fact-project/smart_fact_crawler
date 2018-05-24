@@ -2,6 +2,7 @@
 plots/
 config.ini
 MANIFEST
+.pytest_cache
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
