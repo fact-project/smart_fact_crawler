@@ -218,10 +218,10 @@ def status(url=None, timeout=None, fallback=False):
     table = smartfact2table(url, timeout=timeout)
     get = partial(get_entry, fallback=fallback)
 
-    value, unit = get(table, 29, 1, default='nan nan').split(' ')[:2]
+    value, unit = get(table, 30, 1, default='nan nan').split(' ')[:2]
     storage_newdaq = Quantity(s2f(value), unit)
 
-    value, unit = get(table, 30, 1, default='nan nan').split(' ')[:2]
+    value, unit = get(table, 31, 1, default='nan nan').split(' ')[:2]
     storage_daq = Quantity(s2f(value), unit)
 
     return to_namedtuple('StatusPage', {
@@ -252,11 +252,12 @@ def status(url=None, timeout=None, fallback=False):
         'tng_weather': get(table, 24, 1),
         'magic_lidar': get(table, 25, 1),
         'temperature': get(table, 26, 1),
-        'chat_server': get(table, 27, 1),
-        'skype_client': get(table, 28, 1),
+        'rain_sensor': get(table, 27, 1),
+        'chat_server': get(table, 28, 1),
+        'skype_client': get(table, 29, 1),
         'free_space_newdaq': storage_newdaq,
         'free_space_daq': storage_daq,
-        'smartfact_runtime': get(table, 31, 1),
+        'smartfact_runtime': get(table, 32, 1),
     })
 
 
@@ -315,13 +316,17 @@ def main_page(url=None, timeout=None, fallback=False):
     table = smartfact2table(url, timeout=timeout)
     get = partial(get_entry, fallback=fallback)
 
+    humidity = get(table, 4, 1)
+    if humidity.lower().strip() != 'rain':
+        humidity = s2f(humidity)
+
     system_status = get(table, 1, 1)
     return to_namedtuple('MainPage', {
         'timestamp_1': sft2dt(get(table, 0, 0)),
         'timestamp_2': sft2dt(get(table, 0, 1)),
         'system_status': system_status,
         'relative_camera_temperature': Quantity(s2f(get(table, 3, 1)), 'deg_C'),
-        'humidity': Quantity(s2f(get(table, 4, 1)), '%'),
+        'humidity': humidity,
         'wind_speed': Quantity(s2f(get(table, 4, 2)), 'km/h'),
     })
 
