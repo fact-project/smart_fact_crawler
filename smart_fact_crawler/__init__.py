@@ -316,7 +316,8 @@ def main_page(url=None, timeout=None, fallback=False):
     table = smartfact2table(url, timeout=timeout)
     get = partial(get_entry, fallback=fallback)
 
-    humidity = get(table, 4, 1)
+    humidity = get(table, 4, 1, default='')
+
     if humidity.lower().strip() != 'rain':
         humidity = s2f(humidity)
 
