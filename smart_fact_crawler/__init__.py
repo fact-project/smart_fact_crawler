@@ -20,12 +20,12 @@ Quantity = namedtuple('Quantity', ['value', 'unit'])
 
 
 run_re = re.compile(
-    '([0-9]{2}:[0-9]{2}:[0-9]{2}) '  # match the time part
-    '<#[a-z]+>'                      # html color
-    '([a-zA-Z\-]+) '                 # run type
-    '\[([a-zA-Z0-9 ]+)\] '           # source name
-    '\(Run (\d+)\)'                  # run number
-    '</#>'
+    r'([0-9]{2}:[0-9]{2}:[0-9]{2}) '  # match the time part
+    r'<#[a-z]+>'                      # html color
+    r'([a-zA-Z\-]+) '                 # run type
+    r'\[([a-zA-Z0-9+.\-() ]+)\] '           # source name
+    r'\(Run (\d+)\)'                  # run number
+    r'</#>'
 )
 Run = namedtuple('Run', ['start', 'type', 'source', 'id'])
 
@@ -174,7 +174,7 @@ def sipm_currents(url=None, timeout=None, fallback=False):
 
     power_str = get(table, 6, 1, default='')
     # we expect something like 5W [4mW]
-    match = re.match('(\d+)([a-zA-Z]+)\s*\[(\d+)([a-zA-Z]+)\]', power_str)
+    match = re.match(r'(\d+)([a-zA-Z]+)\s*\[(\d+)([a-zA-Z]+)\]', power_str)
     if match is not None:
         cam_value, cam_unit, gapd_value, gapd_unit = match.groups()
         power_camera = Quantity(s2f(cam_value), cam_unit)
