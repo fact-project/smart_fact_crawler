@@ -180,7 +180,7 @@ def tng_weather(url=None, timeout=None, fallback=False):
         'humidity': Quantity(s2f(get(table, 4, 1)), '%'),
         'pressure': Quantity(s2f(get(table, 5, 1)), 'hPa'),
         'wind_speed': Quantity(s2f(get(table, 6, 1)), 'km/h'),
-        'wind_direction': get(table, 7, 1),
+        'wind_direction': Quantity(s2f(get(table, 7, 1)), 'deg'),
         'dust_total': Quantity(s2f(get(table, 8, 1)), 'ug/m3'),
         'solarimeter': Quantity(s2f(get(table, 9, 1)), 'W/m2'),
     })
