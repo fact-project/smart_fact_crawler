@@ -42,6 +42,7 @@ def smartfact(timeout=None, fallback=False):
         sqm,
         sun,
         weather,
+        tng_weather,
         sipm_currents,
         sipm_voltages,
         container_temperature,
@@ -161,6 +162,27 @@ def weather(url=None, timeout=None, fallback=False):
         'wind_gusts': Quantity(s2f(get(table, 8, 1)), 'km/h'),
         'wind_direction': get(table, 9, 1),
         'dust_tng': Quantity(s2f(get(table, 10, 1)), 'ug/m3'),
+    })
+
+
+def tng_weather(url=None, timeout=None, fallback=False):
+    if url is None:
+        url = os.path.join(smartfacturl, 'tngdata.data')
+
+    table = smartfact2table(url, timeout=timeout)
+    get = partial(get_entry, fallback=fallback)
+
+    return to_namedtuple('TNGWeather', {
+        'timestamp': sft2dt(get(table, 0, 0)),
+        'temperature': Quantity(s2f(get(table, 1, 1)), 'deg_C'),
+        'delta_temperature_24h': Quantity(s2f(get(table, 2, 1)), 'deg_C'),
+        'dew_point': Quantity(s2f(get(table, 3, 1)), 'deg_C'),
+        'humidity': Quantity(s2f(get(table, 4, 1)), '%'),
+        'pressure': Quantity(s2f(get(table, 5, 1)), 'hPa'),
+        'wind_speed': Quantity(s2f(get(table, 6, 1)), 'km/h'),
+        'wind_direction': Quantity(s2f(get(table, 7, 1)), 'deg'),
+        'dust_total': Quantity(s2f(get(table, 8, 1)), 'ug/m3'),
+        'solarimeter': Quantity(s2f(get(table, 9, 1)), 'W/m2'),
     })
 
 
