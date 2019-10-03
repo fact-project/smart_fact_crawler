@@ -61,7 +61,6 @@ def test_timestamp_dates():
         for row_name in page._asdict():
             row = page._asdict()[row_name]
             if 'timestamp' in row_name:
-                print(page_name, row.date())
                 assert row.date() == test_date
 
 
