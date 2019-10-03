@@ -3,7 +3,7 @@ import smart_fact_crawler as sfc
 from datetime import datetime
 from pytest import raises
 
-test_dir = '20171019_0336'
+test_dir = '2019_10_03_1531/data'
 
 
 def test_is_install_folder_a_directory():
@@ -44,7 +44,7 @@ def test_timestamp_dates():
         'resources',
         test_dir,
     )
-    test_date = datetime(2017, 10, 19).date()
+    test_date = datetime(2019, 10, 3).date()
 
     complete = sfc.smartfact()
 
@@ -54,12 +54,14 @@ def test_timestamp_dates():
         # the sqm was broken and hence not up to date
         # the test data is not from during data taking
         # so errorhist is from the day before
-        if page_name in ('sqm', 'errorhist'):
+        # tng_weather is also broken
+        if page_name in ('sqm', 'errorhist', 'tng_weather'):
             continue
 
         for row_name in page._asdict():
             row = page._asdict()[row_name]
             if 'timestamp' in row_name:
+                print(page_name, row.date())
                 assert row.date() == test_date
 
 
@@ -91,5 +93,5 @@ def test_source_name():
         test_dir,
     )
 
-    assert sfc.current_source().name == '1H0323+342'
-    assert sfc.drive_tracking().source_name == '1H0323+342'
+    assert sfc.current_source().name == 'Park'
+    assert sfc.drive_tracking().source_name == ''
