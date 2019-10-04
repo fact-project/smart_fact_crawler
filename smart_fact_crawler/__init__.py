@@ -162,6 +162,7 @@ def weather(url=None, timeout=None, fallback=False):
         'wind_gusts': Quantity(s2f(get(table, 8, 1)), 'km/h'),
         'wind_direction': get(table, 9, 1),
         'dust_tng': Quantity(s2f(get(table, 10, 1)), 'ug/m3'),
+        'dust_gtc': Quantity(s2f(get(table, 11, 1)), 'ug/m3'),
     })
 
 
@@ -240,10 +241,10 @@ def status(url=None, timeout=None, fallback=False):
     table = smartfact2table(url, timeout=timeout)
     get = partial(get_entry, fallback=fallback)
 
-    value, unit = get(table, 30, 1, default='nan nan').split(' ')[:2]
+    value, unit = get(table, 31, 1, default='nan nan').split(' ')[:2]
     storage_newdaq = Quantity(s2f(value), unit)
 
-    value, unit = get(table, 31, 1, default='nan nan').split(' ')[:2]
+    value, unit = get(table, 32, 1, default='nan nan').split(' ')[:2]
     storage_daq = Quantity(s2f(value), unit)
 
     return to_namedtuple('StatusPage', {
@@ -272,14 +273,15 @@ def status(url=None, timeout=None, fallback=False):
         'ratescan': get(table, 22, 1),
         'magic_weather': get(table, 23, 1),
         'tng_weather': get(table, 24, 1),
-        'magic_lidar': get(table, 25, 1),
-        'temperature': get(table, 26, 1),
-        'rain_sensor': get(table, 27, 1),
-        'chat_server': get(table, 28, 1),
-        'skype_client': get(table, 29, 1),
+        'gtc_dust': get(table, 25, 1),
+        'magic_lidar': get(table, 26, 1),
+        'temperature': get(table, 27, 1),
+        'rain_sensor': get(table, 28, 1),
+        'chat_server': get(table, 29, 1),
+        'skype_client': get(table, 30, 1),
         'free_space_newdaq': storage_newdaq,
         'free_space_daq': storage_daq,
-        'smartfact_runtime': get(table, 32, 1),
+        'smartfact_runtime': get(table, 33, 1),
     })
 
 
