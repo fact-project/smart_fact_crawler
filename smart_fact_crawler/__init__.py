@@ -162,6 +162,7 @@ def weather(url=None, timeout=None, fallback=False):
         'wind_gusts': Quantity(s2f(get(table, 8, 1)), 'km/h'),
         'wind_direction': get(table, 9, 1),
         'dust_tng': Quantity(s2f(get(table, 10, 1)), 'ug/m3'),
+        'dust_gtc': Quantity(s2f(get(table, 11, 1)), 'ug/m3'),
     })
 
 

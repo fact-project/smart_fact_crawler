@@ -1,7 +1,7 @@
 from os import path
 import smart_fact_crawler as sfc
 from datetime import datetime
-from pytest import raises
+from pytest import raises, approx
 
 test_dir = '2019_10_03_1531/data'
 
@@ -94,3 +94,14 @@ def test_source_name():
 
     assert sfc.current_source().name == 'Park'
     assert sfc.drive_tracking().source_name == ''
+
+
+def test_weather_gtc_dust():
+    sfc.smartfacturl = 'file:' + path.join(
+        path.dirname(sfc.__file__),
+        'resources',
+        test_dir,
+    )
+
+    weather = sfc.weather()
+    assert weather.dust_gtc.value == approx(19.2, abs=1e-1)
