@@ -39,7 +39,6 @@ def smartfact(timeout=None, fallback=False):
         status,
         drive_tracking,
         drive_pointing,
-        sqm,
         sun,
         weather,
         tng_weather,
@@ -88,22 +87,6 @@ def drive_pointing(url=None, timeout=None, fallback=False):
         'timestamp': sft2dt(get(table, 0, 0)),
         'azimuth': Quantity(s2f(get(table, 1, 1)), 'deg'),
         'zenith_distance': Quantity(s2f(get(table, 2, 1)), 'deg'),
-    })
-
-
-def sqm(url=None, timeout=None, fallback=False):
-    if url is None:
-        url = os.path.join(smartfacturl, 'sqm.data')
-
-    table = smartfact2table(url, timeout=timeout)
-    get = partial(get_entry, fallback=fallback)
-
-    return to_namedtuple('SqmPage', {
-        'timestamp': sft2dt(get(table, 0, 0)),
-        'magnitude': Quantity(s2f(get(table, 1, 1)), 'mag'),
-        'sensor_frequency': Quantity(s2f(get(table, 2, 1)), 'Hz'),
-        'sensor_period': Quantity(s2f(get(table, 4, 1)), 's'),
-        'sensor_temperature': Quantity(s2f(get(table, 5, 1)), 'deg_C'),
     })
 
 
