@@ -41,6 +41,7 @@ def smartfact(timeout=None, fallback=False):
         drive_pointing,
         sun,
         weather,
+        fsc,
         tng_weather,
         sipm_currents,
         sipm_voltages,
@@ -73,6 +74,22 @@ def drive_tracking(url=None, timeout=None, fallback=False):
         'azimuth': Quantity(s2f(get(table, 5, 1)), 'deg'),
         'control_deviation': Quantity(s2f(get(table, 6, 1)), 'arcsec'),
         'moon_distance': Quantity(s2f(get(table, 7, 1)), 'deg'),
+    })
+
+
+def fsc(url=None, timeout=None, fallback=False):
+    if url is None:
+        url = os.path.join(smartfacturl, 'fsc.data')
+
+    table = smartfact2table(url, timeout=timeout)
+    get = partial(get_entry, fallback=fallback)
+
+    return to_namedtuple('SlowControl', {
+        'timestamp': sft2dt(get(table, 0, 0)),
+        'average_humidity': Quantity(s2f(get(table, 1, 1)), '%'),
+        'relative_temperature_min': Quantity(s2f(get(table, 2, 1)), '%'),
+        'relative_temperature_avg': Quantity(s2f(get(table, 3, 1)), '%'),
+        'relative_temperature_max': Quantity(s2f(get(table, 4, 1)), '%'),
     })
 
 
