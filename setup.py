@@ -1,5 +1,11 @@
 from setuptools import setup
 
+extras_require = {
+    "tests": ['pytest>=3.0', 'freezegun'],
+}
+extras_require['all'] = extras_require['tests']
+
+
 
 setup(
     name='smart_fact_crawler',
@@ -21,7 +27,6 @@ setup(
     install_requires=[
         'requests',
     ],
-    tests_require=['pytest>=3.0', 'freezegun'],
-    setup_requires=['pytest-runner'],
+    extras_require=extras_require,
     zip_safe=True,
 )
