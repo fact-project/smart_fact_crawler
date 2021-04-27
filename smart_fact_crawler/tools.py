@@ -1,7 +1,10 @@
 import html
 import requests
 import urllib
-from datetime import datetime
+from datetime import datetime, timezone
+
+
+UTC = timezone.utc
 
 
 def str2float(text):
@@ -17,8 +20,9 @@ def smartfact_time2datetime(fact_timestamp):
     if fact_timestamp is None:
         return None
 
-    return datetime.utcfromtimestamp(
-        str2float(fact_timestamp) / 1000.0
+    return datetime.fromtimestamp(
+        str2float(fact_timestamp) / 1000.0,
+        tz=UTC,
     )
 
 

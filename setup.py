@@ -9,7 +9,7 @@ extras_require['all'] = extras_require['tests']
 
 setup(
     name='smart_fact_crawler',
-    version='0.6.5',
+    version='0.7.0',
     description='acquire data published on the smartfact web page',
     url='https://github.com/fact-project/smart_fact_crawler.git',
     author='Dominik Neise, Sebastian Mueller, Maximilian Nöthe',
