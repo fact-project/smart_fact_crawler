@@ -1,10 +1,11 @@
 language: python
 python:
-  - '3.5'
+  - '3.7'
+  - '3.8'
 install:
   - pip install -r requirements.txt
-  - pip install .
+  - pip install '.[all]'
   - pip install pyflakes
 script:
   - pyflakes smart_fact_crawler
-  - python setup.py test
+  - pytest

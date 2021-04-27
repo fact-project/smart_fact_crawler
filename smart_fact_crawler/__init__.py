@@ -245,7 +245,7 @@ def status(url=None, timeout=None, fallback=False):
     storage_newdaq = Quantity(s2f(value), unit)
 
     value, unit = get(table, 32, 1, default='nan nan').split(' ')[:2]
-    storage_daq = Quantity(s2f(value), unit)
+    storage_newdata = Quantity(s2f(value), unit)
 
     return to_namedtuple('StatusPage', {
         'timestamp': sft2dt(get(table, 0, 0)),
@@ -280,7 +280,7 @@ def status(url=None, timeout=None, fallback=False):
         'chat_server': get(table, 29, 1),
         'skype_client': get(table, 30, 1),
         'free_space_newdaq': storage_newdaq,
-        'free_space_daq': storage_daq,
+        'free_space_newdata': storage_newdata,
         'smartfact_runtime': get(table, 33, 1),
     })
 

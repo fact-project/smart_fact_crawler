@@ -1,5 +1,11 @@
 from setuptools import setup
 
+extras_require = {
+    "tests": ['pytest>=3.0', 'freezegun'],
+}
+extras_require['all'] = extras_require['tests']
+
+
 
 setup(
     name='smart_fact_crawler',
@@ -12,16 +18,13 @@ setup(
     packages=[
         'smart_fact_crawler',
     ],
-    package_data={
-        'smart_fact_crawler': [
-            'resources/20160703_233149/*.data',
-            'resources/20160703_233149_broken_fsc/fsc.data',
-        ]
-    },
     install_requires=[
         'requests',
     ],
-    tests_require=['pytest>=3.0', 'freezegun'],
-    setup_requires=['pytest-runner'],
-    zip_safe=True,
+    include_package_data=True,
+    package_data={
+        'smart_fact_crawler': ['resources/*'],
+    },
+    extras_require=extras_require,
+    zip_safe=False,
 )
